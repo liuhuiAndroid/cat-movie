@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.rest.common.persistence.dao.MoocFilmTMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.common.persistence.model.MoocFilmT">
+        <id column="UUID" property="uuid" />
+        <result column="film_name" property="filmName" />
+        <result column="film_type" property="filmType" />
+        <result column="img_address" property="imgAddress" />
+        <result column="film_score" property="filmScore" />
+        <result column="film_preSaleNum" property="filmPresalenum" />
+        <result column="film_box_office" property="filmBoxOffice" />
+        <result column="film_source" property="filmSource" />
+        <result column="film_cats" property="filmCats" />
+        <result column="film_area" property="filmArea" />
+        <result column="film_date" property="filmDate" />
+        <result column="film_time" property="filmTime" />
+        <result column="film_status" property="filmStatus" />
+    </resultMap>
+
+</mapper>
