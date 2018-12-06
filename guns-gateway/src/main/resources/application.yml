@@ -10,7 +10,7 @@ jwt:
   md5-key: randomKey      #md5加密混淆key
   ignore-url: /user/register,/user/check,/film/getIndex, #忽略列表
 server:
-  port: 80 #项目端口
+  port: 81 #项目端口
 
 mybatis-plus:
   mapper-locations: classpath*:com/stylefeng/guns/rest/**/mapping/*.xml
@@ -31,11 +31,11 @@ spring:
     name: meeting-gateway
   dubbo:
     server: true
-    registry: zookeeper://localhost:2181
+    registry: zookeeper://118.126.111.144:2181
   datasource:
-      url: jdbc:mysql://127.0.0.1:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+      url: jdbc:mysql://118.126.111.144:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
       username: root
-      password: root
+      password: my-secret-pw
       filters: log4j,wall,mergeStat
 
 logging:
