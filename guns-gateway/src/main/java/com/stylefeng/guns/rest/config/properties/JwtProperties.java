@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConfigurationProperties(prefix = JwtProperties.JWT_PREFIX)
-public class JwtProperties {
+public class  JwtProperties {
 
     public static final String JWT_PREFIX = "jwt";
 

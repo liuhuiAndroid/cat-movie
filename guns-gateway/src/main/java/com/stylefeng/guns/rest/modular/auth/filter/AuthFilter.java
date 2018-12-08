@@ -40,9 +40,11 @@ public class AuthFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-            String ignoreUrl=jwtProperties.getIgnoreUrl();
-            String[] ignoreUrls=ignoreUrl.split(",");
-        for (int i = 0; i <ignoreUrls.length ; i++) {
+
+        // 忽略列表
+        String ignoreUrl = jwtProperties.getIgnoreUrl();
+        String[] ignoreUrls = ignoreUrl.split(",");
+        for (int i = 0; i < ignoreUrls.length; i++) {
             if (request.getServletPath().equals(ignoreUrls[i])) {
                 chain.doFilter(request, response);
                 return;
@@ -54,8 +56,9 @@ public class AuthFilter extends OncePerRequestFilter {
         if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
             authToken = requestHeader.substring(7);
 
+            // 通过token获取userId，并且将值存入ThreadLocal，以便后续业务调用
             String userId = jwtTokenUtil.getUsernameFromToken(authToken);
-            if(userId == null){
+            if (userId == null) {
                 return;
             } else {
                 CurrentUser.saveUserId(userId);
@@ -80,4 +83,5 @@ public class AuthFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
+
 }

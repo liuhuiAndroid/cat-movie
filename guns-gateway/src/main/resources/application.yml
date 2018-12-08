@@ -29,7 +29,7 @@ mybatis-plus:
 spring:
   application:
     name: meeting-gateway
-  dubbo:
+  dubbo: #dubbo配置
     server: true
     registry: zookeeper://118.126.111.144:2181
   datasource:

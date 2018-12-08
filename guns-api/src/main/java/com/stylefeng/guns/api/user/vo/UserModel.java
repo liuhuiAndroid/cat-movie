@@ -3,6 +3,9 @@ package com.stylefeng.guns.api.user.vo;
 
 import java.io.Serializable;
 
+/**
+ * 注册使用
+ */
 public class UserModel implements Serializable {
 
     private String username;

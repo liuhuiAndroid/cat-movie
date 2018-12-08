@@ -13,11 +13,14 @@ import javafx.scene.layout.Background;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 
 @Component
-@Service(interfaceClass = UserAPI.class,loadbalance = "roundrobin")
+@Service(interfaceClass = UserAPI.class, loadbalance = "roundrobin")
 
-public class UserImpl implements UserAPI {
+public class UserServiceImpl implements UserAPI {
+
     @Autowired
     private MoocUserTMapper moocUserTMapper;
 
@@ -37,9 +40,9 @@ public class UserImpl implements UserAPI {
 
         // 将数据实体存入数据库
         Integer insert = moocUserTMapper.insert(moocUserT);
-        if(insert>0){
+        if (insert > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -50,13 +53,11 @@ public class UserImpl implements UserAPI {
         // 根据登陆账号获取数据库信息
         MoocUserT moocUserT = new MoocUserT();
         moocUserT.setUserName(username);
-
         MoocUserT result = moocUserTMapper.selectOne(moocUserT);
-
         // 获取到的结果，然后与加密以后的密码做匹配
-        if(result!=null && result.getUuid()>0){
+        if (result != null && result.getUuid() > 0) {
             String md5Password = MD5Util.encrypt(password);
-            if(result.getUserPwd().equals(md5Password)){
+            if (result.getUserPwd().equals(md5Password)) {
                 return result.getUuid();
             }
         }
@@ -66,18 +67,24 @@ public class UserImpl implements UserAPI {
     @Override
     public boolean checkUsername(String username) {
         EntityWrapper<MoocUserT> entityWrapper = new EntityWrapper<>();
-        entityWrapper.eq("user_name",username);
+        entityWrapper.eq("user_name", username);
         Integer result = moocUserTMapper.selectCount(entityWrapper);
-        if(result!=null && result>0){
+        if (result != null && result > 0) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
 
-    private UserInfoModel do2UserInfo(MoocUserT moocUserT){
+    /**
+     * MoocUserT转换为UserInfoModel
+     *
+     * @param moocUserT
+     * @return
+     */
+    private UserInfoModel do2UserInfo(MoocUserT moocUserT) {
         UserInfoModel userInfoModel = new UserInfoModel();
-
+        // 注意idea特性减少错误率
         userInfoModel.setUuid(moocUserT.getUuid());
         userInfoModel.setHeadAddress(moocUserT.getHeadUrl());
         userInfoModel.setPhone(moocUserT.getUserPhone());
@@ -85,13 +92,12 @@ public class UserImpl implements UserAPI {
         userInfoModel.setEmail(moocUserT.getEmail());
         userInfoModel.setUsername(moocUserT.getUserName());
         userInfoModel.setNickname(moocUserT.getNickName());
-        userInfoModel.setLifeState(""+moocUserT.getLifeState());
+        userInfoModel.setLifeState("" + moocUserT.getLifeState());
         userInfoModel.setBirthday(moocUserT.getBirthday());
         userInfoModel.setAddress(moocUserT.getAddress());
         userInfoModel.setSex(moocUserT.getUserSex());
         userInfoModel.setBeginTime(moocUserT.getBeginTime().getTime());
         userInfoModel.setBiography(moocUserT.getBiography());
-
         return userInfoModel;
     }
 
@@ -114,26 +120,29 @@ public class UserImpl implements UserAPI {
         moocUserT.setLifeState(Integer.parseInt(userInfoModel.getLifeState()));
         moocUserT.setBirthday(userInfoModel.getBirthday());
         moocUserT.setBiography(userInfoModel.getBiography());
-        moocUserT.setBeginTime(null);
+        // moocUserT.setBeginTime(time2Date(userInfoModel.getBeginTime()));
         moocUserT.setHeadUrl(userInfoModel.getHeadAddress());
         moocUserT.setEmail(userInfoModel.getEmail());
         moocUserT.setAddress(userInfoModel.getAddress());
         moocUserT.setUserPhone(userInfoModel.getPhone());
         moocUserT.setUserSex(userInfoModel.getSex());
-        moocUserT.setUpdateTime(null);
-
+        moocUserT.setUpdateTime(time2Date(System.currentTimeMillis()));
         // DO存入数据库
         Integer integer = moocUserTMapper.updateById(moocUserT);
-        if(integer>0){
+        if (integer > 0) {
             // 将数据从数据库中读取出来
             UserInfoModel userInfo = getUserInfo(moocUserT.getUuid());
             // 将结果返回给前端
             return userInfo;
-        }else{
+        } else {
             return null;
         }
     }
 
+    private Date time2Date(long time) {
+        Date date = new Date(time);
+        return date;
+    }
 
 }
 

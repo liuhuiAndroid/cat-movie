@@ -3,7 +3,11 @@ package com.stylefeng.guns.api.user.vo;
 
 import java.io.Serializable;
 
+/**
+ * 用户信息，排除敏感信息
+ */
 public class UserInfoModel implements Serializable{
+
     private Integer uuid;
     private String username;
     private String nickname;
@@ -17,7 +21,6 @@ public class UserInfoModel implements Serializable{
     private String headAddress;
     private long beginTime;
     private long updateTime;
-
 
     public Integer getUuid() {
         return uuid;

@@ -4,6 +4,7 @@ import com.stylefeng.guns.api.user.vo.UserInfoModel;
 import com.stylefeng.guns.api.user.vo.UserModel;
 
 public interface UserAPI {
+
     int login(String username, String password);
 
     boolean register(UserModel userModel);
@@ -13,4 +14,5 @@ public interface UserAPI {
     UserInfoModel getUserInfo(int uuid);
 
     UserInfoModel updateUserInfo(UserInfoModel userInfoModel);
+
 }
