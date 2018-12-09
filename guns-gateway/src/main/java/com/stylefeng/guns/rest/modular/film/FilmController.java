@@ -203,6 +203,7 @@ public class FilmController {
 
     /**
      * 影片详情查询
+     *
      * @param searchParam
      * @param searchType
      * @return
@@ -214,17 +215,16 @@ public class FilmController {
                             int searchType) throws ExecutionException, InterruptedException {
         // 根据searchType，判断查询类型
         FilmDetailVO filmDetail = filmServiceApi.getFilmDetail(searchType, searchParam);
-
         if (filmDetail == null) {
             return ResponseVO.serviceFail("没有可查询的影片");
         } else if (filmDetail.getFilmId() == null || filmDetail.getFilmId().trim().length() == 0) {
             return ResponseVO.serviceFail("没有可查询的影片");
         }
 
+        // ===================================================================
         String filmId = filmDetail.getFilmId();
         // 查询影片的详细信息 -> Dubbo的异步调用
         // 获取影片描述信息
-//        FilmDescVO filmDescVO = filmAsyncServiceApi.getFilmDesc(filmId);
         filmAsyncServiceApi.getFilmDesc(filmId);
         Future<FilmDescVO> filmDescVOFuture = RpcContext.getContext().getFuture();
         // 获取图片信息
@@ -239,21 +239,17 @@ public class FilmController {
 
         // 组织info对象
         InfoRequestVO infoRequstVO = new InfoRequestVO();
-
         // 组织Actor属性
         ActorRequestVO actorRequestVO = new ActorRequestVO();
         actorRequestVO.setActors(actorsVOFutrue.get());
         actorRequestVO.setDirector(actorVOFuture.get());
-
         // 组织info对象
         infoRequstVO.setActors(actorRequestVO);
         infoRequstVO.setBiography(filmDescVOFuture.get().getBiography());
         infoRequstVO.setFilmId(filmId);
         infoRequstVO.setImgVO(imgVOFuture.get());
-
         // 组织成返回值
         filmDetail.setInfo04(infoRequstVO);
-
         return ResponseVO.success(IMG_PRE, filmDetail);
     }
 

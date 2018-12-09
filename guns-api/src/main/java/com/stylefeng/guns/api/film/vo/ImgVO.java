@@ -4,8 +4,12 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 影片图片信息
+ */
 @Data
 public class ImgVO implements Serializable {
+
     private String mainImg;
     private String img01;
     private String img02;

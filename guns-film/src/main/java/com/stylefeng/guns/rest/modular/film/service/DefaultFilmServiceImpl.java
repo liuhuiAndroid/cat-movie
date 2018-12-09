@@ -206,6 +206,7 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
 
     /**
      * 获取经典影片【受欢迎程度做排序】
+     *
      * @param nums
      * @param nowPage
      * @param sortId
@@ -405,81 +406,103 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
         return years;
     }
 
+    /**
+     * 根据影片ID或者名称获取影片信息
+     *
+     * @param searchType  1-按名称 2-按ID的查找
+     * @param searchParam
+     * @return
+     */
     @Override
     public FilmDetailVO getFilmDetail(int searchType, String searchParam) {
         FilmDetailVO filmDetailVO = null;
-        // searchType 1-按名称  2-按ID的查找
         if (searchType == 1) {
             filmDetailVO = moocFilmTMapper.getFilmDetailByName("%" + searchParam + "%");
         } else {
             filmDetailVO = moocFilmTMapper.getFilmDetailById(searchParam);
         }
-
         return filmDetailVO;
     }
 
+    /**
+     * 根据影片ID获取影片详细信息
+     *
+     * @param filmId
+     * @return
+     */
     private MoocFilmInfoT getFilmInfo(String filmId) {
-
         MoocFilmInfoT moocFilmInfoT = new MoocFilmInfoT();
         moocFilmInfoT.setFilmId(filmId);
-
         moocFilmInfoT = moocFilmInfoTMapper.selectOne(moocFilmInfoT);
-
         return moocFilmInfoT;
     }
 
+    /**
+     * 获取影片描述信息
+     *
+     * @param filmId
+     * @return
+     */
     @Override
     public FilmDescVO getFilmDesc(String filmId) {
-
         MoocFilmInfoT moocFilmInfoT = getFilmInfo(filmId);
-
         FilmDescVO filmDescVO = new FilmDescVO();
         filmDescVO.setBiography(moocFilmInfoT.getBiography());
         filmDescVO.setFilmId(filmId);
-
         return filmDescVO;
     }
 
+    /**
+     * 获取图片信息
+     *
+     * @param filmId
+     * @return
+     */
     @Override
     public ImgVO getImgs(String filmId) {
-
         MoocFilmInfoT moocFilmInfoT = getFilmInfo(filmId);
         // 图片地址是五个以逗号为分隔的链接URL
         String filmImgStr = moocFilmInfoT.getFilmImgs();
         String[] filmImgs = filmImgStr.split(",");
-
         ImgVO imgVO = new ImgVO();
-        imgVO.setMainImg(filmImgs[0]);
-        imgVO.setImg01(filmImgs[1]);
-        imgVO.setImg02(filmImgs[2]);
-        imgVO.setImg03(filmImgs[3]);
-        imgVO.setImg04(filmImgs[4]);
-
+        if (filmImgs.length >= 5) {
+            imgVO.setMainImg(filmImgs[0]);
+            imgVO.setImg01(filmImgs[1]);
+            imgVO.setImg02(filmImgs[2]);
+            imgVO.setImg03(filmImgs[3]);
+            imgVO.setImg04(filmImgs[4]);
+        }
         return imgVO;
     }
 
+    /**
+     * 获取导演信息
+     *
+     * @param filmId
+     * @return
+     */
     @Override
     public ActorVO getDectInfo(String filmId) {
-
         MoocFilmInfoT moocFilmInfoT = getFilmInfo(filmId);
-
         // 获取导演编号
         Integer directId = moocFilmInfoT.getDirectorId();
-
         MoocActorT moocActorT = moocActorTMapper.selectById(directId);
-
         ActorVO actorVO = new ActorVO();
         actorVO.setImgAddress(moocActorT.getActorImg());
         actorVO.setDirectorName(moocActorT.getActorName());
-
         return actorVO;
     }
 
+    /**
+     * 获取演员信息
+     *
+     * @param filmId
+     * @return
+     */
     @Override
     public List<ActorVO> getActors(String filmId) {
-
         List<ActorVO> actors = moocActorTMapper.getActors(filmId);
-
         return actors;
     }
+
 }

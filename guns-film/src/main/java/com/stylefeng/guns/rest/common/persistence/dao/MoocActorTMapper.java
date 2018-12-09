@@ -8,13 +8,13 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * <p>
  * 演员表 Mapper 接口
- * </p>
  *
  * @author liu
  * @since 2018-10-03
  */
 public interface MoocActorTMapper extends BaseMapper<MoocActorT> {
+
     List<ActorVO> getActors(@Param("filmId") String filmId);
+
 }

@@ -52,8 +52,16 @@ loadbalance = "roundrobin"
 protocol：服务之间的通信协议，一般用dubbo协议
 
 ## 5 影片模块开发
-服务聚合
-mybatis-plus自定义SQL实现
-dubbo异步调用
+#### 服务聚合
+#### mybatis-plus自定义SQL实现
+#### dubbo异步调用
+影片详情查询接口存在多个服务调用
+影片详情查询改造异步调用:Future特性
+需要配置:@EnableAsync 和 async = true
+[见dubbo 官方文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/async-call.html)
 
-
+## 备注
+常用命令
+```aidl
+clean install -Dmaven.test.skip=true
+```

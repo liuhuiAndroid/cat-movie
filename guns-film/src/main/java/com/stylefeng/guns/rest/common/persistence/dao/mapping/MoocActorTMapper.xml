@@ -8,6 +8,7 @@
         <result column="actor_name" property="actorName" />
         <result column="actor_img" property="actorImg" />
     </resultMap>
+
     <select id="getActors" parameterType="java.lang.String" resultType="com.stylefeng.guns.api.film.vo.ActorVO">
         select actor.`actor_name` as directorName,
                 actor.`actor_img` as imgAddress,
