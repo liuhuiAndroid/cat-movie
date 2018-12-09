@@ -160,6 +160,12 @@ public class FilmController {
         return ResponseVO.success(filmConditionVO);
     }
 
+    /**
+     * 影片查询
+     *
+     * @param filmRequestVO
+     * @return
+     */
     @RequestMapping(value = "getFilms", method = RequestMethod.GET)
     public ResponseVO getFilms(FilmRequestVO filmRequestVO) {
         FilmVO filmVO = null;
@@ -190,19 +196,22 @@ public class FilmController {
                         filmRequestVO.getCatId());
                 break;
         }
-        // 根据sortId排序
-        // 添加各种条件查询
-        // 判断当前是第几页
-
-        return ResponseVO.success(filmVO.getNowPage(), filmVO.getTotalPage(),
-                IMG_PRE, filmVO.getFilmInfo());
+        // 根据sortId排序,添加各种条件查询,判断当前是第几页
+        // 这些在filmServiceApi中已经做好了
+        return ResponseVO.success(filmVO.getNowPage(), filmVO.getTotalPage(), IMG_PRE, filmVO.getFilmInfo());
     }
 
-
+    /**
+     * 影片详情查询
+     * @param searchParam
+     * @param searchType
+     * @return
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     @RequestMapping(value = "films/{searchParam}", method = RequestMethod.GET)
     public ResponseVO films(@PathVariable("searchParam") String searchParam,
                             int searchType) throws ExecutionException, InterruptedException {
-
         // 根据searchType，判断查询类型
         FilmDetailVO filmDetail = filmServiceApi.getFilmDetail(searchType, searchParam);
 
