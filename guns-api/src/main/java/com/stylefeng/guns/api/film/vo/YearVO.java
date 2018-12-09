@@ -9,6 +9,7 @@ public class YearVO implements Serializable {
 
     private String yearId;
     private String yearName;
+    // 前端被选中项
     private boolean isActive;
 
 }

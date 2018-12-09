@@ -21,4 +21,5 @@ public class ExampleController {
         System.out.println(simpleObject.getUser());
         return ResponseEntity.ok("请求成功!");
     }
+
 }

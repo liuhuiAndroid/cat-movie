@@ -13,4 +13,5 @@ public class BannerVO implements Serializable {
     private String bannerId;
     private String bannerAddress;
     private String bannerUrl;
+
 }

@@ -37,5 +37,23 @@ localhost:80/auth/userName=admin&password=admin 获取jwt
 guns-api项目，存放接口和公共类
 
 ## 4 用户模块开发
- 
+#### 启动检查
+dubbo可以不先启动服务提供者，避免强依赖
+```$xslt
+    @Reference(interfaceClass = UserAPI.class, check = false)
+    private UserAPI userAPI;
+```
+#### 负载均衡
+负载均衡策略配置，一般配置在service上
+```$xslt
+loadbalance = "roundrobin"
+```
+#### 多协议支持
+protocol：服务之间的通信协议，一般用dubbo协议
+
+## 5
+服务聚合
+mybatis-plus自定义SQL实现
+dubbo异步调用
+
 

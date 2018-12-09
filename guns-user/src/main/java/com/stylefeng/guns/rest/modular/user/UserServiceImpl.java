@@ -1,6 +1,5 @@
 package com.stylefeng.guns.rest.modular.user;
 
-
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.stylefeng.guns.api.user.UserAPI;
@@ -15,10 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-
 @Component
 @Service(interfaceClass = UserAPI.class, loadbalance = "roundrobin")
-
 public class UserServiceImpl implements UserAPI {
 
     @Autowired
