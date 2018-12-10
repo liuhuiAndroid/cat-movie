@@ -60,6 +60,12 @@ protocol：服务之间的通信协议，一般用dubbo协议
 需要配置:@EnableAsync 和 async = true
 [见dubbo 官方文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/async-call.html)
 
+## 6
+#### 影院模块业务开发
+#### 修改全局异常返回
+#### Dubbo特性：并发控制，结果缓存
+
+
 ## 备注
 常用命令
 ```aidl

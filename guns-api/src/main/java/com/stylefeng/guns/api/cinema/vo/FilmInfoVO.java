@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class FilmInfoVO implements Serializable {
+
     private String filmId;
     private String filmName;
     private String filmLength;

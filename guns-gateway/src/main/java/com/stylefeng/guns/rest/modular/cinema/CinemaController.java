@@ -29,7 +29,12 @@ public class CinemaController {
 
     public static final String IMG_PRE = "http://img.impyq.com/";
 
-    // 查询影院列表
+    /**
+     * 查询影院列表
+     *
+     * @param cinemaQueryVO
+     * @return
+     */
     @RequestMapping(value = "getCinemas")
     public ResponseVO getCinemas(CinemaQueryVO cinemaQueryVO) {
         try {
@@ -47,8 +52,13 @@ public class CinemaController {
         }
     }
 
-    // 获取影院列表查询条件（热点数据 用 dubbo 缓存
-    // 根据条件获取 品牌列表、行政区域列表、影厅类型列表
+    /**
+     * 获取影院列表查询条件（热点数据 用 dubbo 缓存）
+     * 根据条件获取：品牌列表、行政区域列表、影厅类型列表
+     *
+     * @param cinemaQueryVO
+     * @return
+     */
     @RequestMapping(value = "getCondition")
     public ResponseVO getCondition(CinemaQueryVO cinemaQueryVO) {
         try {
@@ -67,8 +77,14 @@ public class CinemaController {
         }
     }
 
-    // 获取播放场次接口
-    // 1. 根据影院编号，获取影院信息；2. 获取所有电影的信息和对应的放映场次信息
+    /**
+     * 获取电影播放场次接口
+     * 1. 根据影院编号，获取影院信息
+     * 2. 获取所有电影的信息和对应的放映场次信息
+     *
+     * @param cinemaId 影院编号
+     * @return
+     */
     @RequestMapping(value = "getFields")
     public ResponseVO getFields(Integer cinemaId) {
         try {
@@ -84,11 +100,17 @@ public class CinemaController {
         }
     }
 
-    // 获取场次详细信息
-    // 1. 根据影院编号获取影院信息
-    // 2. 根据放映场次 id 获取放映信息
-    // 3. 根据放映场次查询播放的电影编号，再根据电影编号获取对应的电影信息
-    // 4. 根据放映场次 id 获取已售座位
+    /**
+     * 获取场次详细信息
+     * 1. 根据影院编号获取影院信息
+     * 2. 根据放映场次 id 获取放映信息
+     * 3. 根据放映场次查询播放的电影编号，再根据电影编号获取对应的电影信息
+     * 4. 根据放映场次 id 获取已售座位
+     *
+     * @param cinemaId 影院编号
+     * @param fieldId  场次编号
+     * @return
+     */
     @RequestMapping(value = "getFieldInfo", method = RequestMethod.POST)
     public ResponseVO getFieldInfo(Integer cinemaId, Integer fieldId) {
         try {
@@ -98,7 +120,6 @@ public class CinemaController {
 
             // 造几个销售的假数据，对接订单接口
             filmFieldInfo.setSoldSeats(orderServiceAPI.getSoldSeatsByFieldId(fieldId));
-
             CinemaFieldResponseVO cinemaFieldResponseVO = new CinemaFieldResponseVO();
             cinemaFieldResponseVO.setCinemaInfo(cinemaInfoById);
             cinemaFieldResponseVO.setFilmInfo(filmInfoByFieldId);
@@ -109,4 +130,5 @@ public class CinemaController {
             return ResponseVO.serviceFail("获取选座信息失败");
         }
     }
+
 }

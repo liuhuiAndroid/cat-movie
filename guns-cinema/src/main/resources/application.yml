@@ -30,13 +30,13 @@ spring:
   application:
     name: user
   datasource:
-      url: jdbc:mysql://119.29.196.55:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useOldAliasMetadataBehavior=true
+      url: jdbc:mysql://118.126.111.144:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useOldAliasMetadataBehavior=true
       username: root
-      password: Asd123456!
+      password: my-secret-pw
       filters: log4j,wall,mergeStat
   dubbo:
     server: true
-    registry: zookeeper://127.0.0.1:2181
+    registry: zookeeper://118.126.111.144:2181
     protocol:
       name: dubbo
       port: 20885
