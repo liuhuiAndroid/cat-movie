@@ -1,0 +1,25 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: sso-client
+  profiles:
+    active: local
+  aop:
+    proxy-target-class: true
+  mvc:
+    static-path-pattern: /static/**
+    view:
+      prefix: /WEB-INF/view
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+
+mybatis-plus:
+  typeAliasesPackage: com.stylefeng.sso.client.modular.entity
+
+# 单点信息配置
+sso:
+  serverUrl: http://localhost:8000/sso/

@@ -13,12 +13,16 @@
         <module>guns-core</module>
         <module>guns-rest</module>
         <module>guns-generator</module>
+        <module>guns-sso-plugin</module>
+        <module>guns-sso-server</module>
+        <module>guns-example-client</module>
         <module>guns-gateway</module>
         <module>guns-api</module>
         <module>guns-user</module>
         <module>guns-film</module>
         <module>guns-cinema</module>
         <module>guns-order</module>
+        <module>guns-alipay</module>
     </modules>
 
     <parent>
@@ -61,6 +65,11 @@
             <dependency>
                 <groupId>com.stylefeng</groupId>
                 <artifactId>guns-core</artifactId>
+                <version>${guns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.stylefeng</groupId>
+                <artifactId>guns-sso-plugin</artifactId>
                 <version>${guns.version}</version>
             </dependency>
             <dependency>

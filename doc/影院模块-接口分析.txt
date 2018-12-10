@@ -1,0 +1,92 @@
+1、查询影院列表
+	接口：根据CinemaQueryVO，查询影院列表
+	入参：CinemaQueryVO
+	出参：
+			CinemaVO
+					“uuid”: 1231,
+					“cinemaName”: “大地影院”,
+					“address”:”东城区滨河路乙1号雍和航星园74-76号楼”,
+					“minimumPrice”: 48.5
+
+
+2、条件列表
+	接口：根据条件获取品牌列表，获取行政区域列表，获取影厅类型列表
+	入参：brandId,hallType,areaId
+	出参：
+					获取品牌 brand
+						brandId
+						brandName
+						isActive
+					获取行政区域 area
+						areaId
+						areaName
+						isActive
+					获取影厅类型 halltype
+						halltypeId
+						halltypeName
+						isActive
+
+
+3、获取播放场次接口
+	接口： 根据影院编号，获取影院信息； 获取所有电影的信息和对应的放映场次信息
+	入参： cinemaId
+	出参：
+			cinemaInfo
+				“cinemaId”: 123594,
+				“imgUrl”:”cinemas/123.jpg”,
+				“cinemaName”:”大地影院”,
+				“cinemaAdress”:” 顺义区新顺南大街11号隆华购物中心6F”,
+				“cinemaPhone”:” 010-89472732”
+
+
+			filmInfo
+				“filmId”:”10”,
+		    “filmName”:”我不是药神”,
+		    “filmLength”:”117分钟”,
+				"filmType":"国语2D",
+		    “filmCats”:”剧情”,
+		    “actors”:”徐峥,周一围,王传君”,
+				“imgAddress”:”films/12312312.jpg”
+				filmFields = 集合
+
+			filmFields 对象
+				“fieldId”: 1,
+				“beginTime”:”09:30”,
+				“endTime”:”11:20”,
+				“language”:”中文2D”,
+				“hallName”:”4号厅(激光)”,
+				“price”:”60”
+
+
+4、	获取场次详细信息接口
+	接口：
+			根据影院编号获取影院信息
+			根据放映场次ID获取放映信息
+			根据放映场次查询播放的电影编号，然后根据电影编号获取对应的电影信息
+			根据放映场次ID获取已售座位
+
+	入参：cinemaId -> 影院编号  fieldId -> 播放场次的编号
+	出参：
+				"filmInfo":{
+						"filmId":"12",
+						"filmName":"反贪风暴3",
+						"filmType":"国语2D",
+						"imgAddress":"films/294381-3.jpg",
+						"filmCats":"剧情,动作,犯罪",
+						"filmLength": 100
+
+				"cinemaInfo":{
+						“cinemaId”: 123594,
+						“imgUrl”:”cinemas/123.jpg”,
+						“cinemaName”:”大地影院”,
+						“cinemaAdress”:” 顺义区新顺南大街11号隆华购物中心6F”,
+						“cinemaPhone”:” 010-89472732”
+
+
+				hallInfo
+						"hallFieldId":"1",
+						"hallName":"1号VIP厅",
+						"price":48,
+						"seatFile":"halls/4552.json",
+						"soldSeats":"1,2,3,5,12"  -> 假的，因为没有订单
+

@@ -90,7 +90,7 @@ public class UserController {
     @RequestMapping(value = "getUserInfo", method = RequestMethod.GET)
     public ResponseVO getUserInfo() {
         // 获取当前登陆用户
-        String userId = CurrentUser.getCurrentUser();
+        String userId = CurrentUser.getCurrentUserId();
         if (userId != null && userId.trim().length() > 0) {
             // 将用户ID传入后端进行查询
             int uuid = Integer.parseInt(userId);
@@ -113,7 +113,7 @@ public class UserController {
     @RequestMapping(value = "updateUserInfo", method = RequestMethod.POST)
     public ResponseVO updateUserInfo(UserInfoModel userInfoModel) {
         // 获取当前登陆用户
-        String userId = CurrentUser.getCurrentUser();
+        String userId = CurrentUser.getCurrentUserId();
         if (userId != null && userId.trim().length() > 0) {
             // 将用户ID传入后端进行查询
             int uuid = Integer.parseInt(userId);

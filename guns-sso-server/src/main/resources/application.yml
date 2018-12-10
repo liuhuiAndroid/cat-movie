@@ -1,0 +1,27 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /sso
+
+spring:
+  application:
+    name: guns-sso-server
+  profiles:
+    active: local
+  mvc:
+    static-path-pattern: /static/**
+    view:
+      prefix: /WEB-INF/view
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/sso_server?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+  aop:
+    auto: true
+    proxy-target-class: true
+
+mybatis-plus:
+  typeAliasesPackage: com.stylefeng.sso.server.modular.entity
+
+log:
+  path: sso-server
