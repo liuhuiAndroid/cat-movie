@@ -35,25 +35,30 @@ public class MoocHallFilmInfoT extends Model<MoocHallFilmInfoT> {
      */
     @TableField("film_name")
     private String filmName;
+
     /**
      * 电影时长
      */
     @TableField("film_length")
     private String filmLength;
+
     /**
      * 电影类型
      */
     @TableField("film_cats")
     private String filmCats;
+
     /**
      * 电影语言
      */
     @TableField("film_language")
     private String filmLanguage;
+
     /**
      * 演员列表
      */
     private String actors;
+
     /**
      * 图片地址
      */

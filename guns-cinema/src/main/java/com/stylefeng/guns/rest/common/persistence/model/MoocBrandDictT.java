@@ -25,12 +25,12 @@ public class MoocBrandDictT extends Model<MoocBrandDictT> {
      */
     @TableId(value = "UUID", type = IdType.AUTO)
     private Integer uuid;
+
     /**
      * 显示名称
      */
     @TableField("show_name")
     private String showName;
-
 
     public Integer getUuid() {
         return uuid;

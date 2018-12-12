@@ -25,26 +25,31 @@ public class MoocCinemaT extends Model<MoocCinemaT> {
      */
     @TableId(value = "UUID", type = IdType.AUTO)
     private Integer uuid;
+
     /**
      * 影院名称
      */
     @TableField("cinema_name")
     private String cinemaName;
+
     /**
      * 影院电话
      */
     @TableField("cinema_phone")
     private String cinemaPhone;
+
     /**
      * 品牌编号
      */
     @TableField("brand_id")
     private Integer brandId;
+
     /**
      * 地域编号
      */
     @TableField("area_id")
     private Integer areaId;
+
     /**
      * 包含的影厅类型,以#作为分割
      */
@@ -55,17 +60,18 @@ public class MoocCinemaT extends Model<MoocCinemaT> {
      */
     @TableField("img_address")
     private String imgAddress;
+
     /**
      * 影院地址
      */
     @TableField("cinema_address")
     private String cinemaAddress;
+
     /**
      * 最低票价
      */
     @TableField("minimum_price")
     private Integer minimumPrice;
-
 
     public Integer getUuid() {
         return uuid;

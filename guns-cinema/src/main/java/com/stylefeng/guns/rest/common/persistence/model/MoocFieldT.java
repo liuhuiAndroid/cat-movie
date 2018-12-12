@@ -40,26 +40,29 @@ public class MoocFieldT extends Model<MoocFieldT> {
      */
     @TableField("begin_time")
     private String beginTime;
+
     /**
      * 结束时间
      */
     @TableField("end_time")
     private String endTime;
+
     /**
      * 放映厅类型编号
      */
     @TableField("hall_id")
     private Integer hallId;
+
     /**
      * 放映厅名称
      */
     @TableField("hall_name")
     private String hallName;
+
     /**
-     * 票价
+     * 票价票价
      */
     private Integer price;
-
 
     public Integer getUuid() {
         return uuid;

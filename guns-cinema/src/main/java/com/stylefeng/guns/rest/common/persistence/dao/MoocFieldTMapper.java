@@ -23,4 +23,5 @@ public interface MoocFieldTMapper extends BaseMapper<MoocFieldT> {
     HallInfoVO getHallInfo(@Param("fieldId") int fieldId);
 
     FilmInfoVO getFilmInfoById(@Param("fieldId") int fieldId);
+
 }

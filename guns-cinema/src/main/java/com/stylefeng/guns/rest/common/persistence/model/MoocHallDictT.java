@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 
 /**
@@ -25,17 +26,18 @@ public class MoocHallDictT extends Model<MoocHallDictT> {
      */
     @TableId(value = "UUID", type = IdType.AUTO)
     private Integer uuid;
+
     /**
      * 显示名称
      */
     @TableField("show_name")
     private String showName;
+
     /**
      * 座位文件存放地址
      */
     @TableField("seat_address")
     private String seatAddress;
-
 
     public Integer getUuid() {
         return uuid;
@@ -69,9 +71,9 @@ public class MoocHallDictT extends Model<MoocHallDictT> {
     @Override
     public String toString() {
         return "MoocHallDictT{" +
-        "uuid=" + uuid +
-        ", showName=" + showName +
-        ", seatAddress=" + seatAddress +
-        "}";
+                "uuid=" + uuid +
+                ", showName=" + showName +
+                ", seatAddress=" + seatAddress +
+                "}";
     }
 }

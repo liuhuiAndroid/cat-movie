@@ -4,21 +4,22 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.common.persistence.model.MoocFieldT">
-        <id column="UUID" property="uuid" />
-        <result column="cinema_id" property="cinemaId" />
-        <result column="film_id" property="filmId" />
-        <result column="begin_time" property="beginTime" />
-        <result column="end_time" property="endTime" />
-        <result column="hall_id" property="hallId" />
-        <result column="hall_name" property="hallName" />
-        <result column="price" property="price" />
+        <id column="UUID" property="uuid"/>
+        <result column="cinema_id" property="cinemaId"/>
+        <result column="film_id" property="filmId"/>
+        <result column="begin_time" property="beginTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="hall_id" property="hallId"/>
+        <result column="hall_name" property="hallName"/>
+        <result column="price" property="price"/>
     </resultMap>
+
     <!-- 一对多的查询 -->
     <resultMap id="getFilmInfoMap" type="com.stylefeng.guns.api.cinema.vo.FilmInfoVO">
         <result column="film_id" property="filmId"></result>
         <result column="film_name" property="filmName"></result>
         <result column="film_length" property="filmLength"></result>
-        <result column="film_language" property="filmType"></result>
+        <result column="film_cats" property="filmType"></result>
         <result column="film_cats" property="filmCats"></result>
         <result column="actors" property="actors"></result>
         <result column="img_address" property="imgAddress"></result>
@@ -64,7 +65,7 @@
           mooc_hall_dict_t hall,
           mooc_field_t f
         WHERE f.`hall_id` = hall.`UUID`
-          AND f.`UUID` = 1
+          AND f.`UUID` = ${fieldId}
     </select>
 
     <select id="getFilmInfoById" parameterType="java.lang.Integer" resultType="com.stylefeng.guns.api.cinema.vo.FilmInfoVO">
