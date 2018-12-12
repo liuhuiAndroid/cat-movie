@@ -7,5 +7,7 @@ import java.util.List;
 
 @Data
 public class CinemaListResponseVO {
+
     private List<CinemaVO> cinemas;
+
 }

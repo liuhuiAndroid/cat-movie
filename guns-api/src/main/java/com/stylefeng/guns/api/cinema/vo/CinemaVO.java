@@ -2,8 +2,10 @@ package com.stylefeng.guns.api.cinema.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class CinemaVO {
+public class CinemaVO implements Serializable {
 
     // 主键编号
     private String uuid;

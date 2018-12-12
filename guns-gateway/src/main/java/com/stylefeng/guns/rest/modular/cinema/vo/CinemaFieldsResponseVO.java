@@ -8,6 +8,8 @@ import java.util.List;
 
 @Data
 public class CinemaFieldsResponseVO {
+
     private CinemaInfoVO cinemaInfo;
     private List<FilmInfoVO> filmList;
+
 }

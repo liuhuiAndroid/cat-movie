@@ -13,4 +13,5 @@ public class GunsGatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(GunsGatewayApplication.class, args);
     }
+
 }

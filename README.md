@@ -58,14 +58,26 @@ protocol：服务之间的通信协议，一般用dubbo协议
 影片详情查询接口存在多个服务调用
 影片详情查询改造异步调用:Future特性
 需要配置:@EnableAsync 和 async = true
-[见dubbo 官方文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/async-call.html)
+[异步调用 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/async-call.html)
 
 ## 6
 #### 影院模块业务开发
 mybatis一对多查询：根据影院编号,获取所有电影的信息和对应的放映场次信息
 #### 修改全局异常返回
-#### Dubbo特性：并发控制，结果缓存
-
+Tip
+#### Dubbo特性：并发、连接控制，结果缓存
+- 结果缓存
+```aidl
+@Reference(interfaceClass = CinemaServiceApi.class, cache = "lru", check = false)
+```
+dubbo缓存是本地缓存，不是分布式缓存，需要了解dubbo结果缓存与Redis等的区别，参考官网
+[结果缓存 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/result-cache.html)
+- 并发、连接控制
+```aidl
+@Service(interfaceClass = CinemaServiceApi.class, executes = 10)
+```
+[并发控制 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/concurrency-control.html)
+[连接控制 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/config-connections.html)
 
 ## 备注
 常用命令

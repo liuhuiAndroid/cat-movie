@@ -53,7 +53,8 @@ public class CinemaController {
     }
 
     /**
-     * 获取影院列表查询条件（热点数据 用 dubbo 缓存）
+     * 获取影院列表查询条件
+     * 这个列表是热点数据 -> 可以用dubbo缓存
      * 根据条件获取：品牌列表、行政区域列表、影厅类型列表
      *
      * @param cinemaQueryVO
@@ -66,13 +67,14 @@ public class CinemaController {
             List<BrandVO> brands = cinemaServiceApi.getBrands(cinemaQueryVO.getBrandId());
             List<AreaVO> areas = cinemaServiceApi.getAreas(cinemaQueryVO.getDistrictId());
             List<HallTypeVO> hallTypes = cinemaServiceApi.getHallTypes(cinemaQueryVO.getHallType());
+
             CinemaConditionResponseVO cinemaConditionResponseVO = new CinemaConditionResponseVO();
             cinemaConditionResponseVO.setAreaList(areas);
             cinemaConditionResponseVO.setBrandList(brands);
             cinemaConditionResponseVO.setHalltypeList(hallTypes);
             return ResponseVO.success(cinemaConditionResponseVO);
         } catch (Exception e) {
-            log.error("获取条件列表失败", e);
+            log.error("获取影院查询条件失败", e);
             return ResponseVO.serviceFail("获取影院查询条件失败");
         }
     }
@@ -90,6 +92,7 @@ public class CinemaController {
         try {
             CinemaInfoVO cinemaInfoById = cinemaServiceApi.getCinemaInfoById(cinemaId);
             List<FilmInfoVO> filmInfoByCinemaId = cinemaServiceApi.getFilmInfoByCinemaId(cinemaId);
+
             CinemaFieldsResponseVO cinemaFieldsResponseVO = new CinemaFieldsResponseVO();
             cinemaFieldsResponseVO.setCinemaInfo(cinemaInfoById);
             cinemaFieldsResponseVO.setFilmList(filmInfoByCinemaId);
@@ -118,8 +121,9 @@ public class CinemaController {
             FilmInfoVO filmInfoByFieldId = cinemaServiceApi.getFilmInfoByFieldId(fieldId);
             HallInfoVO filmFieldInfo = cinemaServiceApi.getFilmFieldInfo(fieldId);
 
-            // 造几个销售的假数据，对接订单接口
-            filmFieldInfo.setSoldSeats(orderServiceAPI.getSoldSeatsByFieldId(fieldId));
+            // 造几个销售的假数据，后续对接订单接口
+            filmFieldInfo.setSoldSeats("1,2,3");
+//            filmFieldInfo.setSoldSeats(orderServiceAPI.getSoldSeatsByFieldId(fieldId));
             CinemaFieldResponseVO cinemaFieldResponseVO = new CinemaFieldResponseVO();
             cinemaFieldResponseVO.setCinemaInfo(cinemaInfoById);
             cinemaFieldResponseVO.setFilmInfo(filmInfoByFieldId);
