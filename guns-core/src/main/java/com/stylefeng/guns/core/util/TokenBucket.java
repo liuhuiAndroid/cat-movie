@@ -1,25 +1,31 @@
 package com.stylefeng.guns.core.util;
 
-// 因为令牌桶对业务有一定的容忍度
+/**
+ * 令牌桶
+ * 为什么使用令牌桶：对业务有一定的容忍度
+ * TODO 实现一个复杂的令牌桶
+ */
 public class TokenBucket {
 
-    private int bucketNums = 100;  // 桶的容量
-    private int rate = 1;          // 流入速度
-    private int nowTokens;      //  当前令牌数量
-    private long timestamp = getNowTime();     //  时间
+    // 桶的容量
+    private int bucketNums = 100;
+    // 流入速度
+    private int rate = 1;
+    // 当前令牌数量
+    private int nowTokens;
+    // 时间
+    private long timestamp = getNowTime();
 
     private long getNowTime() {
         return System.currentTimeMillis();
     }
 
-    private int min(int tokens) {
-        if (bucketNums > tokens) {
-            return tokens;
-        } else {
-            return bucketNums;
-        }
-    }
-
+    /**
+     * 获取令牌
+     * TODO 上锁
+     *
+     * @return
+     */
     public boolean getToken() {
         // 记录来拿令牌的时间
         long nowTime = getNowTime();
@@ -38,4 +44,24 @@ public class TokenBucket {
             return true;
         }
     }
+
+    private int min(int tokens) {
+        if (bucketNums > tokens) {
+            return tokens;
+        } else {
+            return bucketNums;
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        TokenBucket tokenBucket = new TokenBucket();
+        for (int i = 0; i < 100; i++) {
+            if (i == 10) {
+                Thread.sleep(500);
+            }
+            boolean token = tokenBucket.getToken();
+            System.out.println("第" + i + "次：" + token);
+        }
+    }
+
 }

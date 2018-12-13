@@ -32,14 +32,21 @@ public class OrderController {
     @Reference(interfaceClass = OrderServiceAPI.class, check = false, timeout = 8000, group = "order2017")
     private OrderServiceAPI orderServiceAPI2017;
 
-    // 服务降级
+    /**
+     * 服务降级方法，注意参数需要一致
+     *
+     * @param fieldId
+     * @param soldSeats
+     * @param seatsName
+     * @return
+     */
     public ResponseVO error(Integer fieldId, String soldSeats, String seatsName) {
         return ResponseVO.serviceFail("抱歉，下单的人太多了，请稍后重试");
     }
 
     /**
      * 用户下单购票
-     * 信号量隔离 线程池隔离 线程切换
+     * Hystrix有信号量隔离，线程池隔离，线程切换等保护机制，导致ThreadLocal无法使用，需要使用InheritableThreadLocal
      *
      * @param fieldId   场次编号
      * @param soldSeats 购买座位编号
@@ -48,9 +55,9 @@ public class OrderController {
      */
     @HystrixCommand(fallbackMethod = "error", commandProperties = {
             @HystrixProperty(name = "execution.isolation.strategy", value = "THREAD"),
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "4000"),
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
-            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50")},
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "4000"), // 超时时间
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"), // 请求数量
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50")}, // error百分比
             threadPoolProperties = {
                     @HystrixProperty(name = "coreSize", value = "1"),
                     @HystrixProperty(name = "maxQueueSize", value = "10"),
@@ -61,9 +68,14 @@ public class OrderController {
             })
     @RequestMapping(value = "buyTickets", method = RequestMethod.POST)
     public ResponseVO buyTickets(Integer fieldId, String soldSeats, String seatsName) {
+        // 认为制造异常，测试服务降级
+        // int i = 5/0;
         try {
             // 限流：如果能拿到 token，所有业务继续，拿不到则返回
+            // TODO 考虑增加队列缓存一下未获得令牌的请求
             if (tokenBucket.getToken()) {
+                // TODO 分布式事务
+                // TODO 同步改异步，否则性能会非常差
                 // 验证售出的票是否为真
                 boolean isTrue = orderServiceAPI.isTrueSeats(fieldId + "", soldSeats);
                 // 已经销售的座位里，有没有这些座位

@@ -1,0 +1,38 @@
+添加依赖包
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+    <version>2.0.0.RELEASE</version>
+</dependency>
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+    <version>2.0.0.RELEASE</version>
+</dependency>
+
+
+添加开启注解
+@EnableHystrixDashboard
+@EnableCircuitBreaker
+@EnableHystrix
+
+
+配置示例
+@HystrixCommand(fallbackMethod = "error", commandProperties = {
+@HystrixProperty(name="execution.isolation.strategy", value = "THREAD"),
+@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value
+= "4000"),
+@HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+@HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = ”50")
+}, threadPoolProperties = {
+@HystrixProperty(name = "coreSize", value = "1"),
+@HystrixProperty(name = "maxQueueSize", value = "10"),
+@HystrixProperty(name = "keepAliveTimeMinutes", value = "1000"),
+@HystrixProperty(name = "queueSizeRejectionThreshold", value = "8"),
+@HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "12"),
+@HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "1500")
+})
