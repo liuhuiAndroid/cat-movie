@@ -13,4 +13,5 @@ public class AliPayResultVO implements Serializable {
     private String orderId;
     private Integer orderStatus;
     private String orderMsg;
+
 }

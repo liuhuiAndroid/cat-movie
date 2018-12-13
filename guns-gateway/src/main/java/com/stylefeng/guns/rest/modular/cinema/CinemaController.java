@@ -122,8 +122,8 @@ public class CinemaController {
             HallInfoVO filmFieldInfo = cinemaServiceApi.getFilmFieldInfo(fieldId);
 
             // 造几个销售的假数据，后续对接订单接口
-            filmFieldInfo.setSoldSeats("1,2,3");
-//            filmFieldInfo.setSoldSeats(orderServiceAPI.getSoldSeatsByFieldId(fieldId));
+            // filmFieldInfo.setSoldSeats("1,2,3");
+            filmFieldInfo.setSoldSeats(orderServiceAPI.getSoldSeatsByFieldId(fieldId));
             CinemaFieldResponseVO cinemaFieldResponseVO = new CinemaFieldResponseVO();
             cinemaFieldResponseVO.setCinemaInfo(cinemaInfoById);
             cinemaFieldResponseVO.setFilmInfo(filmInfoByFieldId);

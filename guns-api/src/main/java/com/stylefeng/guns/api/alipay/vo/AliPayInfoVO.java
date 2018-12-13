@@ -12,4 +12,5 @@ public class AliPayInfoVO implements Serializable {
 
     private String orderId;
     private String QRCodeAddress;
+
 }

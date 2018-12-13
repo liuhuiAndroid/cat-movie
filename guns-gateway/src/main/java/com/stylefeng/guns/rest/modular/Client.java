@@ -12,7 +12,7 @@ public class Client {
     private UserAPI userAPI;
 
     public void run() {
-        userAPI.login("admin", "password ");
-
+        userAPI.login("admin", "password");
     }
+
 }

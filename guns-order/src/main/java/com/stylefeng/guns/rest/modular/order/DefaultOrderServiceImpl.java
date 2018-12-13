@@ -169,7 +169,7 @@ public class DefaultOrderServiceImpl implements OrderServiceAPI {
     }
 
     /**
-     * 获取登录人已经购买的订单
+     * 获取登录用户已经购买的订单
      *
      * @param userId
      * @param page
@@ -200,14 +200,8 @@ public class DefaultOrderServiceImpl implements OrderServiceAPI {
         }
     }
 
-
-    /*
-        1  1,2,3,4
-        1  5,6,7
-     */
-
     /**
-     * 根据放映查询，获取所有的已售座位
+     * 根据放映场次查询，获取所有的已售座位
      *
      * @param fieldId
      * @return

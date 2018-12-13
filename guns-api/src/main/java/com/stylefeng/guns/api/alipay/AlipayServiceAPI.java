@@ -8,7 +8,6 @@ import com.stylefeng.guns.api.alipay.vo.AliPayResultVO;
  */
 public interface AlipayServiceAPI {
 
-
     // 获取二维码
     AliPayInfoVO getQRCode(String orderId);
 

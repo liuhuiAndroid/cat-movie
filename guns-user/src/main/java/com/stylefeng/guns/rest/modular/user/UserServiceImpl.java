@@ -46,10 +46,10 @@ public class UserServiceImpl implements UserAPI {
 
 
     @Override
-    public int login(String username, String password) {
+    public int login(String userName, String password) {
         // 根据登录账号获取数据库信息
         MoocUserT moocUserT = new MoocUserT();
-        moocUserT.setUserName(username);
+        moocUserT.setUserName(userName);
         MoocUserT result = moocUserTMapper.selectOne(moocUserT);
         // 获取到的结果，然后与加密以后的密码做匹配
         if (result != null && result.getUuid() > 0) {

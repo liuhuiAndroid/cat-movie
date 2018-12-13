@@ -14,10 +14,10 @@ public interface OrderServiceAPI {
     // 创建订单信息
     OrderVO saveOrderInfo(Integer fieldId, String soldSeats, String seatsName, Integer userId);
 
-    // 获取登录人已经购买的订单
+    // 获取登录用户已经购买的订单
     Page<OrderVO> getOrderByUserId(Integer userId, Page<OrderVO> page);
 
-    // 根据FieldId 获取所有已经销售的座位编号
+    // 根据放映场次查询，获取所有已经销售的座位编号
     String getSoldSeatsByFieldId(Integer fieldId);
 
     // 根据订单编号获取订单信息

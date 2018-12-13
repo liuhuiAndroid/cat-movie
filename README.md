@@ -71,12 +71,15 @@ Tip
 @Reference(interfaceClass = CinemaServiceApi.class, cache = "lru", check = false)
 ```
 dubbo缓存是本地缓存，不是分布式缓存，需要了解dubbo结果缓存与Redis等的区别，参考官网
+
 [结果缓存 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/result-cache.html)
+
 - 并发、连接控制
 ```aidl
 @Service(interfaceClass = CinemaServiceApi.class, executes = 10)
 ```
 [并发控制 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/concurrency-control.html)
+
 [连接控制 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/config-connections.html)
 
 ## 7 订单模块开发
@@ -91,15 +94,33 @@ dubbo缓存是本地缓存，不是分布式缓存，需要了解dubbo结果缓�
  -> 身份验证匿名，所有用户可以读取写入
 4. 测试
 ftp://192.168.10.109
-- 数据库时间处理
-MoocOrderTMapper.xml#getOrderInfoById 对数据库时间的处理
-mysql函数：DATE_FORMAT、UNIX_TIMESTAMP
 
-#### 高可用：限流和熔断、降级
-#### dubbo特性：分组、聚合和版本控制
+- 数据库时间处理
+1. MoocOrderTMapper.xml#getOrderInfoById 对数据库时间的处理
+2. mysql函数：DATE_FORMAT、UNIX_TIMESTAMP
+
+#### 订单模块的横向和纵向拆表解决
+问题：每年的订单量太大
+
+#### 服务限流如何处理
+问题：双十一订单太多
+
+#### 服务的熔断和降级
+问题：业务系统雪崩
+
+#### 如何保证多版本的蓝绿上线
+- dubbo特性：分组、聚合和版本控制
+- 如何保证多版本的蓝绿上线
+部分上线，灰度发布
 
 ## 备注
-常用命令
+- 常用命令
 ```aidl
 clean install -Dmaven.test.skip=true
+```
+- 测试接口
+```$xslt
+登录：http://localhost:81/auth?userName=admin&password=admin123
+下单：http://localhost:81/order/buyTickets?fieldId=1&soldSeats=9&seatsName=1
+订单列表：http://localhost:81/order/getOrderInfo
 ```
