@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Service(interfaceClass = OrderServiceAPI.class)
+@Service(interfaceClass = OrderServiceAPI.class, group = "default")
 @Slf4j
 public class DefaultOrderServiceImpl implements OrderServiceAPI {
 

@@ -101,6 +101,8 @@ ftp://192.168.10.109
 
 #### 订单模块的横向和纵向拆表解决
 问题：每年的订单量太大
+横向拆分：同一个订单表拆成两个订单表
+纵向拆分：订单表按年进行拆分
 
 #### 服务限流如何处理
 问题：双十一订单太多
@@ -109,9 +111,32 @@ ftp://192.168.10.109
 问题：业务系统雪崩
 
 #### 如何保证多版本的蓝绿上线
-- dubbo特性：分组、聚合和版本控制
-- 如何保证多版本的蓝绿上线
-部分上线，灰度发布
+- dubbo特性：服务分组、聚合和版本控制
+[服务分组 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/service-group.html)
+-> 可以使用分组实现蓝绿上线
+[服务聚合 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/group-merger.html)
+merge只能合并List集合，无法合并两个String
+```aidl
+暂时没有分组聚合的注解，只能手工合并
+OrderServiceImpl2017 + OrderServiceImpl2018
+
+@Service(interfaceClass = OrderServiceAPI.class, group = "default")
+@Service(interfaceClass = OrderServiceAPI.class, group = "order2017")
+@Service(interfaceClass = OrderServiceAPI.class, group = "order2018")
+
+@Reference(interfaceClass = OrderServiceAPI.class, check = false, timeout = 8000, group = "order2018")
+@Reference(interfaceClass = OrderServiceAPI.class, check = false, timeout = 8000, group = "order2017")
+```
+
+- 如何保证多版本的蓝绿上线（部分上线，灰度发布）
+[多版本 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/multi-versions.html)
+```aidl
+group=lan version=1 version=2
+group=lv version=1
+gateway -> lan lv version=1
+gateway -> lan version=1
+gateway -> lan version=2
+```
 
 ## 备注
 - 常用命令

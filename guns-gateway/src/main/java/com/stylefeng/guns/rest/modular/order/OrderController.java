@@ -10,10 +10,14 @@ import com.stylefeng.guns.core.util.TokenBucket;
 import com.stylefeng.guns.rest.common.CurrentUser;
 import com.stylefeng.guns.rest.modular.vo.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.EAN;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -22,8 +26,11 @@ public class OrderController {
 
     private static TokenBucket tokenBucket = new TokenBucket();
 
-    @Reference(interfaceClass = OrderServiceAPI.class, check = false, timeout = 8000)
+    @Reference(interfaceClass = OrderServiceAPI.class, check = false, timeout = 8000, group = "order2018")
     private OrderServiceAPI orderServiceAPI;
+
+    @Reference(interfaceClass = OrderServiceAPI.class, check = false, timeout = 8000, group = "order2017")
+    private OrderServiceAPI orderServiceAPI2017;
 
     // 服务降级
     public ResponseVO error(Integer fieldId, String soldSeats, String seatsName) {
@@ -104,7 +111,13 @@ public class OrderController {
         Page<OrderVO> page = new Page<>(nowPage, pageSize);
         if (userId != null && userId.trim().length() > 0) {
             Page<OrderVO> result = orderServiceAPI.getOrderByUserId(Integer.parseInt(userId), page);
-            return ResponseVO.success(nowPage, (int) result.getPages(), "", result.getRecords());
+            Page<OrderVO> result2017 = orderServiceAPI2017.getOrderByUserId(Integer.parseInt(userId), page);
+            // 合并结果
+            int totalPages = (int) (result.getPages() + result2017.getPages());
+            List<OrderVO> orderVOs = new ArrayList<>();
+            orderVOs.addAll(result.getRecords());
+            orderVOs.addAll(result2017.getRecords());
+            return ResponseVO.success(nowPage, totalPages, "", orderVOs);
         } else {
             return ResponseVO.serviceFail("用户未登录");
         }

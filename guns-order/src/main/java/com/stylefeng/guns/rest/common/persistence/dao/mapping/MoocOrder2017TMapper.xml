@@ -16,6 +16,7 @@
         <result column="order_user" property="orderUser" />
         <result column="order_status" property="orderStatus" />
     </resultMap>
+
     <select id="getSeatsByFieldId" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT
           seat_address AS seatAddress
@@ -25,7 +26,6 @@
         WHERE f.`hall_id` = d.`UUID`
           AND f.`UUID` = #{fieldId}
     </select>
-
 
     <select id="getOrderInfoById" parameterType="java.lang.String" resultType="com.stylefeng.guns.api.order.vo.OrderVO">
         SELECT
@@ -46,7 +46,6 @@
           AND o.`film_id` = h.`film_id`
           AND o.`UUID` = #{orderId}
     </select>
-
 
     <select id="getOrdersByUserId" parameterType="java.lang.Integer" resultType="com.stylefeng.guns.api.order.vo.OrderVO">
         SELECT
@@ -71,4 +70,5 @@
     <select id="getSoldSeatsByFieldId" parameterType="java.lang.Integer" resultType="java.lang.String">
         SELECT GROUP_CONCAT(seats_ids) FROM mooc_order_2017_t where field_id=#{fieldId}
     </select>
+
 </mapper>
