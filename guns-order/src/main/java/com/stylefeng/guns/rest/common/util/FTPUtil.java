@@ -10,51 +10,64 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * 需要 commons-net 依赖
+ */
 @Slf4j
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "ftp")
 public class FTPUtil {
-    private String hostName ="49.140.69.202";
-    private Integer port=21;
-    private String userName="ftp";
-    private String password="ftp";
-    private FTPClient ftpClient =null;
-    private void  initFTPClient(){
+
+    // 地址
+    private String hostName;
+    // 端口
+    private Integer port;
+    // 用户名
+    private String userName;
+    // 密码
+    private String password;
+    // 客户端
+    private FTPClient ftpClient = null;
+
+    /**
+     * 初始化FTPClient
+     */
+    private void initFTPClient() {
         try {
             ftpClient = new FTPClient();
             ftpClient.setControlEncoding("utf-8");
-            ftpClient.connect(hostName,port);
-            ftpClient.login(userName,password);
-
-        }catch (Exception e){
-            log.error("初始化FTP失败",e);
+            ftpClient.connect(hostName, port);
+            ftpClient.login(userName, password);
+        } catch (Exception e) {
+            log.error("初始化FTP失败", e);
         }
     }
-    // 输入一个路径，然后将路径里的文件转换成字符串返回给我
-    public String getFileStrByAddress(String fileAddress){
-        BufferedReader bufferedReader = null;
-        try{
-            initFTPClient();
-            bufferedReader = new BufferedReader(
-                    new InputStreamReader(
-                            ftpClient.retrieveFileStream(fileAddress))
-            );
 
+    /**
+     * 输入一个路径，然后将路径里的文件转换成字符串返回给我
+     *
+     * @param fileAddress
+     * @return
+     */
+    public String getFileStrByAddress(String fileAddress) {
+        BufferedReader bufferedReader = null;
+        try {
+            initFTPClient();
+            bufferedReader = new BufferedReader(new InputStreamReader(ftpClient.retrieveFileStream(fileAddress)));
             StringBuffer stringBuffer = new StringBuffer();
-            while(true){
+            while (true) {
                 String lineStr = bufferedReader.readLine();
-                if(lineStr == null){
+                if (lineStr == null) {
                     break;
                 }
                 stringBuffer.append(lineStr);
             }
-
             ftpClient.logout();
             return stringBuffer.toString();
-        }catch (Exception e){
-            log.error("获取文件信息失败",e);
-        }finally {
+        } catch (Exception e) {
+            log.error("获取文件信息失败", e);
+        } finally {
             try {
                 bufferedReader.close();
             } catch (IOException e) {
@@ -63,11 +76,10 @@ public class FTPUtil {
         }
         return null;
     }
+
     public static void main(String[] args) {
-
         FTPUtil ftpUtil = new FTPUtil();
-        String fileStrByAddress = ftpUtil.getFileStrByAddress("seats/cgs.json");
-
+        String fileStrByAddress = ftpUtil.getFileStrByAddress("seats/123214.json");
         System.out.println(fileStrByAddress);
     }
 

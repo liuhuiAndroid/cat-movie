@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public String unAuth(AuthenticationException e) {
-        log.error("用户未登陆：", e);
+        log.error("用户未登录：", e);
         return "/login.html";
     }
 

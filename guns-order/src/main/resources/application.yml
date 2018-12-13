@@ -26,8 +26,8 @@ mybatis-plus:
     multipleResultSetsEnabled: true #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
 ftp:
-  host-name: 49.140.65.202
-  port: 21
+  host-name: 192.168.10.109
+  port: 2100
   user-name: ftp
   password: ftp
 
@@ -35,13 +35,13 @@ spring:
   application:
     name: user
   datasource:
-      url: jdbc:mysql://119.29.196.55:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useOldAliasMetadataBehavior=true
-      username: root
-      password: Asd123456!
-      filters: log4j,wall,mergeStat
+    url: jdbc:mysql://118.126.111.144:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useOldAliasMetadataBehavior=true
+    username: root
+    password: my-secret-pw
+    filters: log4j,wall,mergeStat
   dubbo:
     server: true
-    registry: zookeeper://127.0.0.1:2181
+    registry: zookeeper://118.126.111.144:2181
     protocol:
       name: dubbo
       port: 20886

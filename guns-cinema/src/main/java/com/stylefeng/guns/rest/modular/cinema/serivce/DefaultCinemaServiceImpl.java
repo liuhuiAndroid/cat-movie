@@ -245,6 +245,12 @@ public class DefaultCinemaServiceImpl implements CinemaServiceApi {
         return moocFieldTMapper.getFilmInfoById(fieldId);
     }
 
+    /**
+     * 获取订单模块需要的信息
+     *
+     * @param fieldId
+     * @return
+     */
     @Override
     public OrderQueryVO getOrderNeeds(int fieldId) {
         OrderQueryVO orderQueryVO = new OrderQueryVO();

@@ -31,11 +31,14 @@ public class OrderController {
         return ResponseVO.serviceFail("抱歉，下单的人太多了，请稍后重试");
     }
 
-    // 购票
-    /*
-        信号量隔离
-        线程池隔离
-        线程切换
+    /**
+     * 用户下单购票
+     * 信号量隔离 线程池隔离 线程切换
+     *
+     * @param fieldId   场次编号
+     * @param soldSeats 购买座位编号
+     * @param seatsName 购买座位名称
+     * @return
      */
     @HystrixCommand(fallbackMethod = "error", commandProperties = {
             @HystrixProperty(name = "execution.isolation.strategy", value = "THREAD"),
@@ -61,10 +64,10 @@ public class OrderController {
                 boolean isNotSold = orderServiceAPI.isNotSoldSeats(fieldId + "", soldSeats);
                 // 验证，上述两个内容有一个不为真，则不创建订单信息
                 if (isTrue && isNotSold) {
-                    // 创建订单信息,注意获取登陆人
+                    // 创建订单信息,注意获取登录人
                     String userId = CurrentUser.getCurrentUserId();
                     if (userId == null || userId.trim().length() == 0) {
-                        return ResponseVO.serviceFail("用户未登陆");
+                        return ResponseVO.serviceFail("用户未登录");
                     }
                     OrderVO orderVO = orderServiceAPI.saveOrderInfo(fieldId, soldSeats, seatsName, Integer.parseInt(userId));
                     if (orderVO == null) {
@@ -85,21 +88,27 @@ public class OrderController {
         }
     }
 
-    // 获取订单信息
+    /**
+     * 获取订单信息
+     *
+     * @param nowPage  当前页
+     * @param pageSize 每页多少条
+     * @return
+     */
     @RequestMapping(value = "getOrderInfo", method = RequestMethod.POST)
     public ResponseVO getOrderInfo(
             @RequestParam(name = "nowPage", required = false, defaultValue = "1") Integer nowPage,
-            @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize
-    ) {
-        // 获取当前登陆人的信息
+            @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
+        // 获取当前登录人的信息
         String userId = CurrentUser.getCurrentUserId();
-        // 使用当前登陆人获取已经购买的订单
+        // 使用当前登录人获取已经购买的订单
         Page<OrderVO> page = new Page<>(nowPage, pageSize);
         if (userId != null && userId.trim().length() > 0) {
             Page<OrderVO> result = orderServiceAPI.getOrderByUserId(Integer.parseInt(userId), page);
             return ResponseVO.success(nowPage, (int) result.getPages(), "", result.getRecords());
         } else {
-            return ResponseVO.serviceFail("用户未登陆");
+            return ResponseVO.serviceFail("用户未登录");
         }
     }
+
 }

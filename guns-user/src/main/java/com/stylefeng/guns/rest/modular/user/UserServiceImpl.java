@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserAPI {
 
     @Override
     public int login(String username, String password) {
-        // 根据登陆账号获取数据库信息
+        // 根据登录账号获取数据库信息
         MoocUserT moocUserT = new MoocUserT();
         moocUserT.setUserName(username);
         MoocUserT result = moocUserTMapper.selectOne(moocUserT);

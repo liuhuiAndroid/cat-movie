@@ -50,7 +50,7 @@ public class LoginController extends BaseController {
         List<Integer> roleList = ShiroKit.getUser().getRoleList();
         if (roleList == null || roleList.size() == 0) {
             ShiroKit.getSubject().logout();
-            model.addAttribute("tips", "该用户没有角色，无法登陆");
+            model.addAttribute("tips", "该用户没有角色，无法登录");
             return "/login.html";
         }
         List<MenuNode> menus = menuService.getMenusByRoleIds(roleList);

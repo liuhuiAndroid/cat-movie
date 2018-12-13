@@ -60,7 +60,7 @@ protocol：服务之间的通信协议，一般用dubbo协议
 需要配置:@EnableAsync 和 async = true
 [异步调用 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/async-call.html)
 
-## 6
+## 6 影院模块开发
 #### 影院模块业务开发
 mybatis一对多查询：根据影院编号,获取所有电影的信息和对应的放映场次信息
 #### 修改全局异常返回
@@ -78,6 +78,25 @@ dubbo缓存是本地缓存，不是分布式缓存，需要了解dubbo结果缓�
 ```
 [并发控制 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/concurrency-control.html)
 [连接控制 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/config-connections.html)
+
+## 7 订单模块开发
+#### 订单模块业务开发
+- window ftp服务器
+1. 在计算机管理中创建用户
+我的电脑 -> 管理 -> 计算机管理 -> 本地用户和组 -> 用户 -> 新用户
+2. 开启FTP服务器
+控制面板 -> 程序和功能 -> 启用或关闭windows功能  -> Internet Infomation Services  -> 勾选FTP服务器和Web管理工具
+3. 添加FTP站点
+控制面板 -> 管理工具 -> IIS管理器 -> 网站 -> 添加FTP站点 -> 站点名称随便写，存放位置新建ftp文件夹 -> 端口2100，不需要SSL
+ -> 身份验证匿名，所有用户可以读取写入
+4. 测试
+ftp://192.168.10.109
+- 数据库时间处理
+MoocOrderTMapper.xml#getOrderInfoById 对数据库时间的处理
+mysql函数：DATE_FORMAT、UNIX_TIMESTAMP
+
+#### 高可用：限流和熔断、降级
+#### dubbo特性：分组、聚合和版本控制
 
 ## 备注
 常用命令

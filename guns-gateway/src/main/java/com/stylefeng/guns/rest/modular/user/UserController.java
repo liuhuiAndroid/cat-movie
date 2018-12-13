@@ -89,7 +89,7 @@ public class UserController {
      */
     @RequestMapping(value = "getUserInfo", method = RequestMethod.GET)
     public ResponseVO getUserInfo() {
-        // 获取当前登陆用户
+        // 获取当前登录用户
         String userId = CurrentUser.getCurrentUserId();
         if (userId != null && userId.trim().length() > 0) {
             // 将用户ID传入后端进行查询
@@ -112,12 +112,12 @@ public class UserController {
      */
     @RequestMapping(value = "updateUserInfo", method = RequestMethod.POST)
     public ResponseVO updateUserInfo(UserInfoModel userInfoModel) {
-        // 获取当前登陆用户
+        // 获取当前登录用户
         String userId = CurrentUser.getCurrentUserId();
         if (userId != null && userId.trim().length() > 0) {
             // 将用户ID传入后端进行查询
             int uuid = Integer.parseInt(userId);
-            // 判断当前登陆人员的ID与修改的结果ID是否一致
+            // 判断当前登录人员的ID与修改的结果ID是否一致
             if (uuid != userInfoModel.getUuid()) {
                 return ResponseVO.serviceFail("请修改您个人的信息");
             }
@@ -128,7 +128,7 @@ public class UserController {
                 return ResponseVO.appFail("用户信息修改失败");
             }
         } else {
-            return ResponseVO.serviceFail("用户未登陆");
+            return ResponseVO.serviceFail("用户未登录");
         }
     }
 
