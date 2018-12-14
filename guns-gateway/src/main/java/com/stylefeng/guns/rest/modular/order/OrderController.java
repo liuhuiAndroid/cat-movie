@@ -182,7 +182,7 @@ public class OrderController {
             return ResponseVO.serviceFail("抱歉，用户未登陆");
         }
 
-        // 将当前登陆人的信息传递给后端
+        // 隐式参数:将当前登陆人的信息传递给后端
         RpcContext.getContext().setAttachment("userId", userId);
 
         // 判断是否支付超时

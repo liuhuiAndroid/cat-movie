@@ -4,9 +4,7 @@ import com.stylefeng.guns.api.alipay.vo.AliPayInfoVO;
 import com.stylefeng.guns.api.alipay.vo.AliPayResultVO;
 
 /**
- * Created by lucasma
- * <p>
- * dubbo mock 业务接口降级
+ * 本地伪装:业务接口降级
  */
 public class AliPayServiceMock implements AliPayServiceAPI {
 

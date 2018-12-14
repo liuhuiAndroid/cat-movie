@@ -5,6 +5,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.stylefeng.guns.api.alipay.AliPayServiceAPI;
+import com.stylefeng.guns.api.alipay.AliPayServiceMock;
 import com.stylefeng.guns.api.alipay.vo.AliPayInfoVO;
 import com.stylefeng.guns.api.alipay.vo.AliPayResultVO;
 import com.stylefeng.guns.api.order.OrderServiceAPI;
@@ -36,7 +37,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-@Service(interfaceClass = AliPayServiceAPI.class) // mock = "com.stylefeng.guns.api.alipay.AlipayServiceMock"
+@Service(interfaceClass = AliPayServiceAPI.class, mock = "com.stylefeng.guns.api.alipay.AliPayServiceMock")
 public class DefaultAliPayServiceImpl implements AliPayServiceAPI {
 
     @Reference(interfaceClass = OrderServiceAPI.class, check = false, group = "order2018")
@@ -102,9 +103,16 @@ public class DefaultAliPayServiceImpl implements AliPayServiceAPI {
      */
     @Override
     public AliPayResultVO getOrderStatus(String orderId) {
-        // 是否有当前登录人
+//        try {
+//            // 测试本地伪装，服务降级，只能捕获Rpc异常
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        // 隐式参数:获取当前登录人
         String userId = RpcContext.getContext().getAttachment("userId");
-        log.info("DefaultAliPayServiceImpl - getOrderStatus -userId {}", userId);
+        log.info("DefaultAliPayServiceImpl - getOrderStatus - userId {}", userId);
+
         boolean isSuccess = trade_query(orderId);
         if (isSuccess) {
             AliPayResultVO aliPayResultVO = new AliPayResultVO();

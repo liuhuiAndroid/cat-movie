@@ -158,6 +158,26 @@ gateway -> lan version=2
 使用沙箱环境测试
 
 #### dubbo特性学习：隐式参数、参数验证等
+- 本地存根
+类似于dubbo的静态代理
+dubbo会在客户端生成一个代理，处理部分业务
+stub必须有可传入proxy的构造函数
+[本地存根 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/local-stub.html)
+- 本地伪装 常用
+本地伪装是本地存根的一个子集
+通常会使用本地伪装处理服务降级
+hystrix对某个方法做降级，本地伪装可以对某个接口做降级
+注意：本地伪装只能捕获Rpc异常
+[本地伪装 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/local-mock.html)
+```aidl
+@Service(interfaceClass = AliPayServiceAPI.class, mock = "com.stylefeng.guns.api.alipay.AlipayServiceMock")
+```
+- 隐式参数 
+dubbo提供了参数的隐式传递
+dubbo的隐式参数仅单次调用可用
+注意隐式参数的保留字段
+分布式事务中经常用到
+[隐式参数 见文档](https://dubbo.gitbooks.io/dubbo-user-book/content/demos/attachment.html)
 
 ## 9 分布式事务
 
