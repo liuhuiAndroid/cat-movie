@@ -1,4 +1,4 @@
-package com.stylefeng.guns.rest.modular.demo;
+package com.stylefeng.guns.rest.modular.test;
 
 import com.stylefeng.guns.rest.modular.alipay.model.builder.AlipayHeartbeatSynRequestBuilder;
 import com.stylefeng.guns.rest.modular.alipay.model.hb.*;

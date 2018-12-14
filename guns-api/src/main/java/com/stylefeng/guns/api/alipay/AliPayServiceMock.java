@@ -8,7 +8,7 @@ import com.stylefeng.guns.api.alipay.vo.AliPayResultVO;
  * <p>
  * dubbo mock 业务接口降级
  */
-public class AlipayServiceMock implements AlipayServiceAPI {
+public class AliPayServiceMock implements AliPayServiceAPI {
 
     @Override
     public AliPayInfoVO getQRCode(String orderId) {

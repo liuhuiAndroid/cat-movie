@@ -1,4 +1,4 @@
-package com.stylefeng.guns.rest.modular.demo;
+package com.stylefeng.guns.rest.modular.test;
 
 import com.alipay.api.AlipayResponse;
 import com.alipay.api.domain.TradeFundBill;

@@ -217,17 +217,30 @@ public class DefaultOrderServiceImpl implements OrderServiceAPI {
         }
     }
 
+    /**
+     * 根据订单编号获取订单信息
+     *
+     * @param orderId
+     * @return
+     */
     @Override
     public OrderVO getOrderInfoById(String orderId) {
         OrderVO orderVO = moocOrderTMapper.getOrderInfoById(orderId);
         return orderVO;
     }
 
+    /**
+     * 修改订单状态
+     *
+     * @param orderId
+     * @return
+     */
     @Override
     public boolean paySuccess(String orderId) {
         MoocOrderT moocOrderT = new MoocOrderT();
         moocOrderT.setUuid(orderId);
         moocOrderT.setOrderStatus(1);
+        // moocOrderTMapper 需要知道唯一主键
         Integer integer = moocOrderTMapper.updateById(moocOrderT);
         if (integer >= 1) {
             return true;

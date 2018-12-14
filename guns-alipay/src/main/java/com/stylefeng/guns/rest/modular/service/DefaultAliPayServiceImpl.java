@@ -3,10 +3,8 @@ package com.stylefeng.guns.rest.modular.service;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.dubbo.rpc.RpcContext;
-import com.alipay.api.domain.TradeFundBill;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
-import com.alipay.api.response.AlipayTradeQueryResponse;
-import com.stylefeng.guns.api.alipay.AlipayServiceAPI;
+import com.stylefeng.guns.api.alipay.AliPayServiceAPI;
 import com.stylefeng.guns.api.alipay.vo.AliPayInfoVO;
 import com.stylefeng.guns.api.alipay.vo.AliPayResultVO;
 import com.stylefeng.guns.api.order.OrderServiceAPI;
@@ -24,7 +22,6 @@ import com.stylefeng.guns.rest.modular.alipay.service.AlipayTradeService;
 import com.stylefeng.guns.rest.modular.alipay.service.impl.AlipayMonitorServiceImpl;
 import com.stylefeng.guns.rest.modular.alipay.service.impl.AlipayTradeServiceImpl;
 import com.stylefeng.guns.rest.modular.alipay.service.impl.AlipayTradeWithHBServiceImpl;
-import com.stylefeng.guns.rest.modular.alipay.utils.Utils;
 import com.stylefeng.guns.rest.modular.alipay.utils.ZxingUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,17 +36,17 @@ import java.util.List;
  */
 @Slf4j
 @Component
-@Service(interfaceClass = AlipayServiceAPI.class,mock = "com.stylefeng.guns.api.alipay.AlipayServiceMock")
-public class DefaultAliPayServiceImpl implements AlipayServiceAPI {
+@Service(interfaceClass = AliPayServiceAPI.class) // mock = "com.stylefeng.guns.api.alipay.AlipayServiceMock"
+public class DefaultAliPayServiceImpl implements AliPayServiceAPI {
 
-    @Reference(interfaceClass = OrderServiceAPI.class, check = false,group = "order2018")
+    @Reference(interfaceClass = OrderServiceAPI.class, check = false, group = "order2018")
     private OrderServiceAPI orderServiceAPI;
 
     @Autowired
     private FtpUtil ftpUtil;
 
     // 支付宝当面付2.0服务
-    private static AlipayTradeService   tradeService;
+    private static AlipayTradeService tradeService;
 
     // 支付宝当面付2.0服务（集成了交易保障接口逻辑）
     private static AlipayTradeService tradeWithHBService;
@@ -77,9 +74,9 @@ public class DefaultAliPayServiceImpl implements AlipayServiceAPI {
                 .setFormat("json").build();
     }
 
-
     /**
      * 获取二维码地址 地址为空 获取二维码失败
+     *
      * @param orderId
      * @return
      */
@@ -99,17 +96,15 @@ public class DefaultAliPayServiceImpl implements AlipayServiceAPI {
 
     /**
      * 获取订单支付状态
+     *
      * @param orderId
      * @return
      */
     @Override
     public AliPayResultVO getOrderStatus(String orderId) {
-
         // 是否有当前登录人
         String userId = RpcContext.getContext().getAttachment("userId");
-
-        log.info("DefaultAliPayServiceImpl - getOrderStatus -userId {}",userId);
-
+        log.info("DefaultAliPayServiceImpl - getOrderStatus -userId {}", userId);
         boolean isSuccess = trade_query(orderId);
         if (isSuccess) {
             AliPayResultVO aliPayResultVO = new AliPayResultVO();
@@ -117,39 +112,39 @@ public class DefaultAliPayServiceImpl implements AlipayServiceAPI {
             aliPayResultVO.setOrderStatus(1);
             aliPayResultVO.setOrderMsg("支付成功！");
             return aliPayResultVO;
+        } else {
+            return null;
         }
-        return null;
     }
 
 
-    // 当面付2.0查询订单
+    /**
+     * 当面付2.0查询订单
+     *
+     * @param orderId
+     * @return
+     */
     public boolean trade_query(String orderId) {
         boolean flag = false;
         // (必填) 商户订单号，通过此商户订单号查询当面付的交易状态
-        String outTradeNo = "tradepay14817938139942440181";
-
+        String outTradeNo = orderId;
         // 创建查询请求builder，设置请求参数
         AlipayTradeQueryRequestBuilder builder = new AlipayTradeQueryRequestBuilder()
                 .setOutTradeNo(outTradeNo);
-
         AlipayF2FQueryResult result = tradeService.queryTradeResult(builder);
         switch (result.getTradeStatus()) {
             case SUCCESS:
                 log.info("查询返回该订单支付成功: )");
                 // 支付成功时候，修改订单状态为 1
-                 flag = orderServiceAPI.paySuccess(orderId);
-
+                flag = orderServiceAPI.paySuccess(orderId);
                 // 订单状态
                 break;
-
             case FAILED:
                 log.error("查询返回该订单支付失败或被关闭!!!");
                 break;
-
             case UNKNOWN:
                 log.error("系统异常，订单支付状态未知!!!");
                 break;
-
             default:
                 log.error("不支持的交易状态，交易返回异常!!!");
                 break;
@@ -157,12 +152,22 @@ public class DefaultAliPayServiceImpl implements AlipayServiceAPI {
         return flag;
     }
 
-    public String  trade_precreate(String orderId) {
+    /**
+     * 当面付2.0生成支付二维码
+     *
+     * @param orderId
+     * @return
+     */
+    public String trade_precreate(String orderId) {
 
         String filePath = "";
 
         // 获取订单信息
         OrderVO orderVO = orderServiceAPI.getOrderInfoById(orderId);
+        if (orderVO == null || orderVO.getOrderId() == null) {
+            log.error("订单信息查询失败,订单编号为{}", orderId);
+            return null;
+        }
 
         // (必填) 商户网站订单系统中唯一订单号，64个字符以内，只能包含字母、数字、下划线，
         // 需保证商户系统端不能重复，建议通过数据库sequence生成，
@@ -173,7 +178,7 @@ public class DefaultAliPayServiceImpl implements AlipayServiceAPI {
 
         // (必填) 订单总金额，单位为元，不能超过1亿元
         // 如果同时传入了【打折金额】,【不可打折金额】,【订单总金额】三者,则必须满足如下条件:【订单总金额】=【打折金额】+【不可打折金额】
-        String totalAmount =  orderVO.getOrderPrice();//"0.01";
+        String totalAmount = orderVO.getOrderPrice();
 
         // (可选) 订单不可打折金额，可以配合商家平台配置折扣活动，如果酒水不参与打折，则将对应金额填写至此字段
         // 如果该值未传入,但传入了【订单总金额】,【打折金额】,则该值默认为【订单总金额】-【打折金额】
@@ -184,7 +189,7 @@ public class DefaultAliPayServiceImpl implements AlipayServiceAPI {
         String sellerId = "";
 
         // 订单描述，可以对交易或商品进行一个详细地描述，比如填写"购买商品2件共15.00元"
-        String body = "购买电影票工花费"+orderVO.getOrderPrice();
+        String body = "购买电影票共花费" + orderVO.getOrderPrice();
 
         // 商户操作员编号，添加此参数可以为商户操作员做销售统计
         String operatorId = "lucas ma";
@@ -227,11 +232,12 @@ public class DefaultAliPayServiceImpl implements AlipayServiceAPI {
                 AlipayTradePrecreateResponse response = result.getResponse();
 
                 // 需要修改为运行机器上的路径
-                 filePath = String.format("/Users/lucasma/Desktop/qr-%s.png",
+                filePath = String.format("D:\\qrcode\\qr-%s.png",
                         response.getOutTradeNo());
 
-                String fileName = String.format("qr-%s.png",response.getOutTradeNo());
+                String fileName = String.format("qr-%s.png", response.getOutTradeNo());
                 log.info("filePath:" + filePath);
+                // 生成二维码
                 File qrCodeImge = ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);
 
                 boolean isSuccess = ftpUtil.uploadFile(fileName, qrCodeImge);

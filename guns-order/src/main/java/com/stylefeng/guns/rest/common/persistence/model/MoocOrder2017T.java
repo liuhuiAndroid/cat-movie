@@ -3,6 +3,7 @@ package com.stylefeng.guns.rest.common.persistence.model;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
 
@@ -22,7 +23,7 @@ public class MoocOrder2017T extends Model<MoocOrder2017T> {
     /**
      * 主键编号
      */
-    @TableField("UUID")
+    @TableId("UUID")
     private String uuid;
     /**
      * 影院编号

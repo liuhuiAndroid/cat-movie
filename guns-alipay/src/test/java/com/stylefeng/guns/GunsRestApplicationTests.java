@@ -14,19 +14,16 @@ import java.io.File;
 @SpringBootTest(classes = AlipayApplication.class)
 public class GunsRestApplicationTests {
 
-//	 注入
     @Autowired
-	private FtpUtil ftpUtil;
-	@Test
-	public void contextLoads() {
-		// ftp 读取配置
-//		String fileStrByAddress = ftpUtil.getFileStrByAddress("seats/cgs.json");
+    private FtpUtil ftpUtil;
 
+    @Test
+    public void contextLoads() {
+//        String fileStrByAddress = ftpUtil.getFileStrByAddress("seats/123214.json");
 //        System.out.println(fileStrByAddress);
 
-        File file = new File("/Users/lucasma/Desktop/qr-tradeprecreate1539484396064607797.png");
-
-        boolean isSuccess = ftpUtil.uploadFile("qr-tradeprecreate1539484396064607797.png", file);
+        File file = new File("D:\\qrcode\\qr-124583135asdf81.png");
+        boolean isSuccess = ftpUtil.uploadFile("qr-124583135asdf81.png", file);
         System.out.println("上传是否成功？ " + isSuccess);
     }
 

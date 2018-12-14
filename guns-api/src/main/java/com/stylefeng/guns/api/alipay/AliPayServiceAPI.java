@@ -6,11 +6,12 @@ import com.stylefeng.guns.api.alipay.vo.AliPayResultVO;
 /**
  * Created by lucasma
  */
-public interface AlipayServiceAPI {
+public interface AliPayServiceAPI {
 
     // 获取二维码
     AliPayInfoVO getQRCode(String orderId);
 
+    // 获取订单支付状态
     AliPayResultVO getOrderStatus(String orderId);
 
 }

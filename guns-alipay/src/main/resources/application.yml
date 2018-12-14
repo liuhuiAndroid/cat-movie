@@ -12,10 +12,10 @@ jwt:
 
 
 ftp:
-  host-name: 39.104.92.14
+  host-name: 118.126.111.144
   port: 21
-  user-name: ftpuser
-  password: 111111
+  user-name: myftp
+  password: myftp
   upload-path: /qrcode
 
 server:
@@ -40,14 +40,14 @@ spring:
     name: meeting-user
   dubbo:
     server: true
-    registry: zookeeper://127.0.0.1:2181
+    registry: zookeeper://118.126.111.144:2181
     protocol:
       name: dubbo
       port: 20887
   datasource:
-      url: jdbc:mysql://127.0.0.1:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
+      url: jdbc:mysql://118.126.111.144:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
       username: root
-      password: rootpwd
+      password: my-secret-pw
       filters: log4j,wall,mergeStat
 
 logging:

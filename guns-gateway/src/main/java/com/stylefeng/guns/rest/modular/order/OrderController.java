@@ -1,16 +1,22 @@
 package com.stylefeng.guns.rest.modular.order;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.dubbo.rpc.RpcContext;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.stylefeng.guns.api.alipay.AliPayServiceAPI;
+import com.stylefeng.guns.api.alipay.vo.AliPayInfoVO;
+import com.stylefeng.guns.api.alipay.vo.AliPayResultVO;
 import com.stylefeng.guns.api.order.OrderServiceAPI;
 import com.stylefeng.guns.api.order.vo.OrderVO;
 import com.stylefeng.guns.core.util.TokenBucket;
+import com.stylefeng.guns.core.util.ToolUtil;
 import com.stylefeng.guns.rest.common.CurrentUser;
 import com.stylefeng.guns.rest.modular.vo.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.EAN;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +37,12 @@ public class OrderController {
 
     @Reference(interfaceClass = OrderServiceAPI.class, check = false, timeout = 8000, group = "order2017")
     private OrderServiceAPI orderServiceAPI2017;
+
+    @Reference(interfaceClass = AliPayServiceAPI.class, check = false)
+    private AliPayServiceAPI aliPayServiceAPI;
+
+    @Value("${img.pre}")
+    public String IMG_PRE;
 
     /**
      * 服务降级方法，注意参数需要一致
@@ -132,6 +144,60 @@ public class OrderController {
             return ResponseVO.success(nowPage, totalPages, "", orderVOs);
         } else {
             return ResponseVO.serviceFail("用户未登录");
+        }
+    }
+
+    /**
+     * 获取支付二维码
+     *
+     * @param orderId 订单编号
+     * @return
+     */
+    @RequestMapping(value = "getPayInfo", method = RequestMethod.POST)
+    public ResponseVO getPayInfo(@RequestParam("orderId") String orderId) {
+        // 获取当前登陆人的信息 TODO 和JWT校验重复
+        String userId = CurrentUser.getCurrentUserId();
+        if (userId == null || userId.trim().length() == 0) {
+            return ResponseVO.serviceFail("抱歉，用户未登陆");
+        }
+        // 订单二维码返回结果
+        AliPayInfoVO aliPayInfoVO = aliPayServiceAPI.getQRCode(orderId);
+        return ResponseVO.success(IMG_PRE, aliPayInfoVO);
+    }
+
+    /**
+     * 获取支付结果
+     *
+     * @param orderId 订单编号
+     * @param tryNums 重试次数
+     * @return
+     */
+    @RequestMapping(value = "getPayResult", method = RequestMethod.POST)
+    public ResponseVO getPayResult(
+            @RequestParam("orderId") String orderId,
+            @RequestParam(name = "tryNums", required = false, defaultValue = "1") Integer tryNums) {
+        // 获取当前登陆人的信息
+        String userId = CurrentUser.getCurrentUserId();
+        if (userId == null || userId.trim().length() == 0) {
+            return ResponseVO.serviceFail("抱歉，用户未登陆");
+        }
+
+        // 将当前登陆人的信息传递给后端
+        RpcContext.getContext().setAttachment("userId", userId);
+
+        // 判断是否支付超时
+        if (tryNums >= 4) {
+            return ResponseVO.serviceFail("订单支付失败，请稍后重试");
+        } else {
+            AliPayResultVO aliPayResultVO = aliPayServiceAPI.getOrderStatus(orderId);
+            if (aliPayResultVO == null || ToolUtil.isEmpty(aliPayResultVO.getOrderId())) {
+                AliPayResultVO serviceFailVO = new AliPayResultVO();
+                serviceFailVO.setOrderId(orderId);
+                serviceFailVO.setOrderStatus(0);
+                serviceFailVO.setOrderMsg("支付不成功");
+                return ResponseVO.success(serviceFailVO);
+            }
+            return ResponseVO.success(aliPayResultVO);
         }
     }
 

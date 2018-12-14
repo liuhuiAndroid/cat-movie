@@ -200,12 +200,24 @@ public class OrderServiceImpl2017 implements OrderServiceAPI {
         }
     }
 
+    /**
+     * 根据订单编号获取订单信息
+     *
+     * @param orderId
+     * @return
+     */
     @Override
     public OrderVO getOrderInfoById(String orderId) {
         OrderVO orderVO = moocOrder2017TMapper.getOrderInfoById(orderId);
         return orderVO;
     }
 
+    /**
+     * 修改订单状态
+     *
+     * @param orderId
+     * @return
+     */
     @Override
     public boolean paySuccess(String orderId) {
         MoocOrder2017T moocOrderT = new MoocOrder2017T();
