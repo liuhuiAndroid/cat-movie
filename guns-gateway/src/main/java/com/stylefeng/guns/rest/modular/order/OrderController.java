@@ -69,7 +69,7 @@ public class OrderController {
     @RequestMapping(value = "buyTickets", method = RequestMethod.POST)
     public ResponseVO buyTickets(Integer fieldId, String soldSeats, String seatsName) {
         // 认为制造异常，测试服务降级
-        // int i = 5/0;
+        // int i = 5 / 0;
         try {
             // 限流：如果能拿到 token，所有业务继续，拿不到则返回
             // TODO 考虑增加队列缓存一下未获得令牌的请求

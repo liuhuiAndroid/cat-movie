@@ -94,6 +94,9 @@ dubbo缓存是本地缓存，不是分布式缓存，需要了解dubbo结果缓�
  -> 身份验证匿名，所有用户可以读取写入
 4. 测试
 ftp://192.168.10.109
+- centos ftp服务器
+[CentOS搭建ftp服务器](https://www.cnblogs.com/ismallboy/p/6785270.html)
+[425 Failed to establish connection 问题解决](https://blog.csdn.net/kofterry/article/details/82875034)
 
 - 数据库时间处理
 1. MoocOrderTMapper.xml#getOrderInfoById 对数据库时间的处理
@@ -158,4 +161,3 @@ clean install -Dmaven.test.skip=true
 下单：http://localhost:81/order/buyTickets?fieldId=1&soldSeats=9&seatsName=1
 订单列表：http://localhost:81/order/getOrderInfo
 ```
-TODO 测试服务降级 家庭版无法使用ftp，需要在腾讯云搭建ftp服务器

@@ -26,10 +26,10 @@ mybatis-plus:
     multipleResultSetsEnabled: true #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
 ftp:
-  host-name: 192.168.10.109
-  port: 2100
-  user-name: ftp
-  password: ftp
+  host-name: 118.126.111.144
+  port: 21
+  user-name: myftp
+  password: myftp
 
 spring:
   application:
