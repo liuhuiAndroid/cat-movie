@@ -208,6 +208,12 @@ TCC事务在确认或取消阶段释放资源
 蚂蚁金服分布式事务（Distributed Transaction-eXtended，简称DTX）收费
 **开源TCC框架（TCC-Transaction）** 暂时使用这个
 **开源TCC框架（ByteTCC）**
+具体源码见[tcc-transaction-master-1.2.x](https://github.com/liuhuiAndroid/tcc-transaction-master-1.2.x)项目
+
+- 重点内容
+熟悉TCC-Transaction的分布式事务处理流程
+TCC-Transaction不能保证幂等性，案例中已经有幂等性示范，添加了草稿状态
+TCC分布式事务的核心是资源
 
 ## 10 服务监控
 
