@@ -215,7 +215,36 @@ TCC事务在确认或取消阶段释放资源
 TCC-Transaction不能保证幂等性，案例中已经有幂等性示范，添加了草稿状态
 TCC分布式事务的核心是资源
 
-## 10 服务监控
+## 10 集群监控与部署
+#### 了解dubbo监控相关内容
+- 了解Dubbo-monitor ：监控统计
+dangdangdotcom/dubbox 支持restful，已经不维护了
+apache/incubator-dubbo 下载源码编译得到 dubbo-monitor-simple-2.8.4-assembly.tar.gz
+> The function of monitor center will be merged to dubbo admin, based on metrics, coming soon
+> monitor center功能即将合并到dubbo admin中
+
+- 部署Dubbo-monitor
+解压dubbo-monitor-simple-2.8.4-assembly.tar.gz -》 dubbo-monitor-simple-2.8.4
+修改conf中dubbo.properties,配置如下
+```$xslt
+dubbo.registry.address = zookeeper://118.126.111.144:2181
+dubbo.jetty.port = 8090
+
+dubbo.jetty.directory=E:/monitor
+dubbo.charts.directory=E:/monitor/charts
+dubbo.statistics.directory=E:/monitor/statistics
+dubbo.log4j.file=E:/monitor/dubbo-monitor-simple.log
+dubbo.log4j.level=WARN
+```
+bin/start.bat 启动
+浏览器访问http://localhost:8090
+
+#### Dubbo-admin 使用（常用）
+
+#### 链路监控
+zipkin
+
+#### 业务系统部署
 
 ## 11 微服务面试总结
 
