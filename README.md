@@ -240,9 +240,36 @@ bin/start.bat 启动
 浏览器访问http://localhost:8090
 
 #### Dubbo-admin 使用（常用）
+Install admin console
+```
+git clone https://github.com/apache/incubator-dubbo-ops.git /var/tmp/dubbo-ops
+cd /var/tmp/dubbo-ops
+mvn clean package
+
+修改配置 application.properties
+mvn clean install -Dskiptest
+```
+dubbo 原生的admin工程使用的更多一点，可以使用当当的版本，dubbo-admin-2.6.0.war
+```aidl
+dubbo-admin-2.6.0.war 重命名为admin
+修改配置 dubbo.properties
+启动tomcat
+访问:localhost:8080/admin
+``` 
 
 #### 链路监控
-zipkin
+- dubbo-filter 
+Dubbo支持Filter机制
+RpcContext就是通过Filter实现
+```aidl
+MyFilter implements Filter
+META-INF.dubbo 中 com.alibaba.dubbo.rpc.Filter 配置 MyFilterEXT=Myfilter全路径
+application.properties 配置 spring.dubbo.provider.filter = MyFilterEXT
+```
+常见自定义Filter:日志记录、trace功能能
+- zipkin
+traceid spanid parentid 
+
 
 #### 业务系统部署
 
@@ -255,7 +282,7 @@ clean install -Dmaven.test.skip=true
 ```
 - 测试接口
 ```$xslt
-登录：http://localhost:81/auth?userName=admin&password=admin123
+登录：http://localhost:81/auth?us erName=admin&password=admin123
 下单：http://localhost:81/order/buyTickets?fieldId=1&soldSeats=9&seatsName=1
 订单列表：http://localhost:81/order/getOrderInfo
 ```
