@@ -25,13 +25,13 @@ import java.util.List;
 
 @Slf4j
 @Component
-@Service(interfaceClass = OrderServiceAPI.class, group = "order2018")
+@Service(interfaceClass = OrderServiceAPI.class, group = "order2018", filter = "tracing")
 public class OrderServiceImpl2018 implements OrderServiceAPI {
 
     @Autowired
     private MoocOrder2018TMapper moocOrder2018TMapper;
 
-    @Reference(interfaceClass = CinemaServiceApi.class, check = false)
+    @Reference(interfaceClass = CinemaServiceApi.class, check = false, filter = "tracing")
     private CinemaServiceApi cinemaServiceAPI;
 
     @Autowired
@@ -126,21 +126,26 @@ public class OrderServiceImpl2018 implements OrderServiceAPI {
         moocOrderT.setFieldId(fieldId);
         moocOrderT.setCinemaId(cinemaId);
 
-        Integer insert = moocOrder2018TMapper.insert(moocOrderT);
-        if (insert > 0) {
-            // 返回查询结果
-            OrderVO orderVO = moocOrder2018TMapper.getOrderInfoById(uuid);
-            if (orderVO == null || orderVO.getOrderId() == null) {
-                log.error("订单信息查询失败,订单编号为{}", uuid);
-                return null;
+        try {
+            Integer insert = moocOrder2018TMapper.insert(moocOrderT);
+            if (insert > 0) {
+                // 返回查询结果
+                OrderVO orderVO = moocOrder2018TMapper.getOrderInfoById(uuid);
+                if (orderVO == null || orderVO.getOrderId() == null) {
+                    log.error("订单信息查询失败,订单编号为{}", uuid);
+                    return null;
+                } else {
+                    return orderVO;
+                }
             } else {
-                return orderVO;
+                // 插入出错
+                log.error("订单插入失败");
+                return null;
             }
-        } else {
-            // 插入出错
-            log.error("订单插入失败");
-            return null;
+        }catch(Exception exception){
+            exception.printStackTrace();
         }
+        return null;
     }
 
     private static double getTotalPrice(int solds, double filmPrice) {

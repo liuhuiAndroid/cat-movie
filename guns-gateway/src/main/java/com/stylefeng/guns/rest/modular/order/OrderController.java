@@ -32,13 +32,13 @@ public class OrderController {
 
     private static TokenBucket tokenBucket = new TokenBucket();
 
-    @Reference(interfaceClass = OrderServiceAPI.class, check = false, timeout = 8000, group = "order2018")
+    @Reference(interfaceClass = OrderServiceAPI.class, check = false, timeout = 8000, group = "order2018", filter = "tracing")
     private OrderServiceAPI orderServiceAPI;
 
-    @Reference(interfaceClass = OrderServiceAPI.class, check = false, timeout = 8000, group = "order2017")
+    @Reference(interfaceClass = OrderServiceAPI.class, check = false, timeout = 8000, group = "order2017", filter = "tracing")
     private OrderServiceAPI orderServiceAPI2017;
 
-    @Reference(interfaceClass = AliPayServiceAPI.class, check = false)
+    @Reference(interfaceClass = AliPayServiceAPI.class, check = false, filter = "tracing")
     private AliPayServiceAPI aliPayServiceAPI;
 
     @Value("${img.pre}")

@@ -23,8 +23,8 @@ public class MoocOrder2018T extends Model<MoocOrder2018T> {
     /**
      * 主键编号
      */
-    @TableId("UUID")
-    private String uuid;
+    @TableField("UUID")
+    private String UUID;
     /**
      * 影院编号
      */
@@ -78,11 +78,11 @@ public class MoocOrder2018T extends Model<MoocOrder2018T> {
 
 
     public String getUuid() {
-        return uuid;
+        return UUID;
     }
 
     public void setUuid(String uuid) {
-        this.uuid = uuid;
+        this.UUID = uuid;
     }
 
     public Integer getCinemaId() {
@@ -173,7 +173,7 @@ public class MoocOrder2018T extends Model<MoocOrder2018T> {
     @Override
     public String toString() {
         return "MoocOrder2018T{" +
-        "uuid=" + uuid +
+        "uuid=" + UUID +
         ", cinemaId=" + cinemaId +
         ", fieldId=" + fieldId +
         ", filmId=" + filmId +

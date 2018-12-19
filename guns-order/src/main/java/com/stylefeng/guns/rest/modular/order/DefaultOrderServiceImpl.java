@@ -24,14 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Service(interfaceClass = OrderServiceAPI.class, group = "default")
+@Service(interfaceClass = OrderServiceAPI.class, group = "default", filter = "tracing")
 @Slf4j
 public class DefaultOrderServiceImpl implements OrderServiceAPI {
 
     @Autowired
     private MoocOrderTMapper moocOrderTMapper;
 
-    @Reference(interfaceClass = CinemaServiceApi.class, check = false)
+    @Reference(interfaceClass = CinemaServiceApi.class, check = false, filter = "tracing")
     private CinemaServiceApi cinemaServiceAPI;
 
     @Autowired

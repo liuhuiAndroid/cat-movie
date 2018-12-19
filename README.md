@@ -93,7 +93,7 @@ dubbo缓存是本地缓存，不是分布式缓存，需要了解dubbo结果缓�
 控制面板 -> 管理工具 -> IIS管理器 -> 网站 -> 添加FTP站点 -> 站点名称随便写，存放位置新建ftp文件夹 -> 端口2100，不需要SSL
  -> 身份验证匿名，所有用户可以读取写入
 4. 测试
-ftp://192.168.10.109
+ftp://192.168.10.109 
 - centos ftp服务器
 [CentOS搭建ftp服务器](https://www.cnblogs.com/ismallboy/p/6785270.html)
 [425 Failed to establish connection 问题解决](https://blog.csdn.net/kofterry/article/details/82875034)
@@ -267,23 +267,23 @@ META-INF.dubbo 中 com.alibaba.dubbo.rpc.Filter 配置 MyFilterEXT=Myfilter全�
 application.properties 配置 spring.dubbo.provider.filter = MyFilterEXT
 ```
 常见自定义Filter:日志记录、trace功能能
-- zipkin
+
+- Zipkin 介绍
 traceid spanid parentid 
-java -jar zipkin.jar
-访问 localhost:9411
-pom依赖 
-```aidl
-dependency manager
-dependency
-```
-gateway、alipay、order、cinema加入依赖包
-TraceConfig 每一个都加入，配置各自的localServiceName
+java -jar zipkin.jar 或者 docker run -d -p 9411:9411 openzipkin/zipkin
+访问 http://118.126.111.144:9411
+
+- 项目集成Zipkin
+```$xslt
+gateway、cinema、order、alipay项目增加zipkin依赖包，pom依赖见Zipkin文档
+TraceConfig 以上项目都加入，配置各自的localServiceName
 OrderController中OrderServiceAPI 注解上增加filter="tracing",很多地方都要加
 启动项目
 注意alipay中有common-lang冲突需要排除
-postman登录、获取支付二维码
-访问 localhost:9411 可以看到链路
+postman测试登录、获取支付二维码
+访问 http://118.126.111.144:9411 可以看到链路
 zipkin数据可以存储到mysql上，三张表
+```
 
 #### 业务系统部署
 
@@ -293,10 +293,13 @@ zipkin数据可以存储到mysql上，三张表
 - 常用命令
 ```aidl
 clean install -Dmaven.test.skip=true
+#启动docker
+sudo systemctl start docker
 ```
 - 测试接口
 ```$xslt
-登录：http://localhost:81/auth?us erName=admin&password=admin123
+登录：http://localhost:81/auth?userName=admin&password=admin123
 下单：http://localhost:81/order/buyTickets?fieldId=1&soldSeats=9&seatsName=1
 订单列表：http://localhost:81/order/getOrderInfo
+获取二维码：http://localhost:81/order/getPayInfo
 ```
