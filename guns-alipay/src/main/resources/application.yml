@@ -37,7 +37,7 @@ mybatis-plus:
 
 spring:
   application:
-    name: meeting-user
+    name: meeting-alipay
   dubbo:
     server: true
     registry: zookeeper://118.126.111.144:2181
@@ -54,4 +54,4 @@ logging:
   level.root: info
   level.com.stylefeng: debug
   path: logs/
-  file: guns-order.log
+  file: guns-alipay.log

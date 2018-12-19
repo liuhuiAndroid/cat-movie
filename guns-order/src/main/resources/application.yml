@@ -33,7 +33,7 @@ ftp:
 
 spring:
   application:
-    name: user
+    name: guns-order
   datasource:
     url: jdbc:mysql://118.126.111.144:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useOldAliasMetadataBehavior=true
     username: root

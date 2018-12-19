@@ -286,6 +286,99 @@ zipkin数据可以存储到mysql上，三张表
 ```
 
 #### 业务系统部署
+1. 购买服务器：阿里云ECS购买服务器 https://www.aliyun.com
+2. 配置安全组：安全组相当于虚拟防火墙
+3. 连接服务器：可以用Xshell远程连接
+4. 域名备案：企业应用 域名注册 购买域名（申请一级域名需要备案，需要先备案服务号申请，然后进入备案系统）
+5. 安装mysql
+```$xslt
+#1. 创建用户
+useradd lh
+passwd qwer1234 
+#2. 添加用户权限
+chmod u+w /etc/sudoers
+vi /etc/sudoers
+lh  ALL=(ALL)   ALL
+chmod u-w /etc/sudoers
+#3. 关闭服务器防火墙，只依赖安全组，方便测试
+service iptables stop // 关闭当前
+chkconfig iptables off // 关闭以后
+#4. 安装mysql 5.7
+yum install -y lrzsz
+mkdir /product
+chown lh:lh /product
+su - lh
+mkdir software
+上传mysql.rpm 镜像源
+sudo yum install mysql.rpm
+ls /etc/yum.repos.d/
+sudo yum install mysql-community-server
+#5. mysql 设置
+sudo service mysqld status
+sudo service mysqld start
+#6. mysql 查看密码
+grep "password" /var/log/mysqld.log
+mysql -uroot -p
+设置新密码
+set password for 'root'@'localhost' = password('123zxc!#*');
+#7.使mysql可以远程访问
+select host,user from mysql.user
+update mysql.user set host='%' where user='root';
+select host,user from mysql.user;
+exit
+sudo service mysqld restart
+```
+6. 访问远程服务器
+可以用Xmanager远程连接,Xshell
+7. 安装vsftp
+教程：https://help.aliyun.com/knowledge_detail/60152.html
+8. 安装jdk
+9. 安装zookeeper
+10. 数据初始化
+数据库运行sql脚本
+11. 打包
+注意 DefaultAliPayServiceImpl 中FTP保存路径需要修改为linux上的路径，
+新增ftp上传路径
+修改数据源，可以做多环境配置
+注意端口冲突
+日志文件路径需要修改
+然后直接打包parent就可以 clean package 跳过测试
+一般会依赖docker jenkins k8s TODO 自动化打包部署回退
+sudo yum install -y unzip
+unzip product.zip # 里面是生成的jar包
+nohup java -jar guns-user-0.0.1.jar &
+ps -ef | grep user
+启动所有项目，使用postman测试
+12. 安装 OpenResty
+```$xslt
+sudo yum install pcre-devel openssl-devel gcc curl -y
+tar -xzvf openresty-VERSION.tar.gz
+
+./configure --prefix=/opt/openresty \
+            --with-pcre-jit \
+            --with-ipv6 \
+            --without-http_redis2_module \
+            --with-http_iconv_module \
+            --with-http_postgres_module \
+            -j2
+            
+make
+make install
+```
+13. 配置OpenResty
+其实只是配置了nginx
+```$xslt
+cd nginx/conf
+vi nginx.conf
+
+server{
+    listen 80;
+    ...
+    location / {
+        proxy_pass http://127.0.0.1:8080
+    }
+}
+```
 
 ## 11 微服务面试总结
 

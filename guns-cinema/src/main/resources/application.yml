@@ -28,7 +28,7 @@ mybatis-plus:
 
 spring:
   application:
-    name: user
+    name: guns-cinema
   datasource:
       url: jdbc:mysql://118.126.111.144:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useOldAliasMetadataBehavior=true
       username: root
@@ -45,4 +45,4 @@ logging:
   level.root: info
   level.com.stylefeng: debug
   path: logs/
-  file: guns-rest.log
+  file: guns-cinema.log
