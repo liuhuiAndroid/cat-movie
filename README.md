@@ -269,7 +269,21 @@ application.properties 配置 spring.dubbo.provider.filter = MyFilterEXT
 常见自定义Filter:日志记录、trace功能能
 - zipkin
 traceid spanid parentid 
-
+java -jar zipkin.jar
+访问 localhost:9411
+pom依赖 
+```aidl
+dependency manager
+dependency
+```
+gateway、alipay、order、cinema加入依赖包
+TraceConfig 每一个都加入，配置各自的localServiceName
+OrderController中OrderServiceAPI 注解上增加filter="tracing",很多地方都要加
+启动项目
+注意alipay中有common-lang冲突需要排除
+postman登录、获取支付二维码
+访问 localhost:9411 可以看到链路
+zipkin数据可以存储到mysql上，三张表
 
 #### 业务系统部署
 
