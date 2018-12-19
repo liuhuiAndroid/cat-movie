@@ -12,7 +12,7 @@ import zipkin2.reporter.okhttp3.OkHttpSender;
 @Configuration
 public class TraceConfig {
 
-    @Bean
+    @Bean(name = "tracing")
     public TracingFactoryBean getTracingBean() {
         TracingFactoryBean tracingFactoryBean = new TracingFactoryBean();
         tracingFactoryBean.setLocalServiceName("alipay");

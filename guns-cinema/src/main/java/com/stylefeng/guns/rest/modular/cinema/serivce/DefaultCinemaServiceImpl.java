@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Service(interfaceClass = CinemaServiceApi.class, executes = 10, filter = "tracing")
+@Service(interfaceClass = CinemaServiceApi.class, executes = 10, filter = {"tracing"})
 public class DefaultCinemaServiceImpl implements CinemaServiceApi {
 
 

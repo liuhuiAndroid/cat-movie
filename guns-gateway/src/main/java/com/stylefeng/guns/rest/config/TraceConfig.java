@@ -14,7 +14,7 @@ import zipkin2.reporter.okhttp3.OkHttpSender;
 @Configuration
 public class TraceConfig {
 
-    @Bean
+    @Bean(name = "tracing")
     public TracingFactoryBean getTracingBean() {
         log.debug("TraceConfig#getTracingBean");
         TracingFactoryBean tracingFactoryBean = new TracingFactoryBean();
